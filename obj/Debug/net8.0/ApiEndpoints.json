@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "GGStat_Backend.SetData",
+    "Method": "GetPlayers",
+    "RelativePath": "api/players",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

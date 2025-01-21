@@ -1,0 +1,6 @@
+@GGStat_Backend_HostAddress = http://localhost:5120
+
+GET {{GGStat_Backend_HostAddress}}/api/players
+Accept: application/json
+
+###

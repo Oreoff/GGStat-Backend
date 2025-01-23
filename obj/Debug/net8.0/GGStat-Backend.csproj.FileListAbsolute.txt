@@ -31,7 +31,6 @@ C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\ref
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\GGStat-Backend.pdb
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\GGStat-Backend.genruntimeconfig.cache
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\ref\GGStat-Backend.dll
-C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\data\players.json
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Newtonsoft.Json.dll
@@ -39,3 +38,5 @@ C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\New
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\GGStat-Backend.sourcelink.json
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\data\players.json

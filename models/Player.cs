@@ -2,9 +2,9 @@
 {
 	public class Player
 	{
-		public string? Name { get; set; }
-		public string? Region { get; set; }
-		public string? Alias { get; set; }
-		public string? Avatar { get; set; }
+		public string? name { get; set; }
+		public string? region { get; set; }
+		public string? alias { get; set; }
+		public string? avatar { get; set; }
 	}
 }

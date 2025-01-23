@@ -2,7 +2,7 @@
 {
 	public class Country
 	{
-		public string? Name { get; set; }
-		public string? Flag { get; set; }
+		public string? name { get; set; }
+		public string? flag { get; set; }
 	}
 }

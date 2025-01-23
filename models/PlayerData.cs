@@ -2,13 +2,13 @@
 {
 	public class PlayerData
 	{
-		public int Standing { get; set; }
-		public Player Player { get; set; }
-		public Country Country { get; set; }
-		public Rank Rank { get; set; }
-		public string Race { get; set; }
-		public int Wins { get; set; }
-		public int Loses { get; set; }
-		public List<Match> Matches { get; set; }
+		public int standing { get; set; }
+		public Player player { get; set; }
+		public Country country { get; set; }
+		public Rank rank { get; set; }
+		public string race { get; set; }
+		public int wins { get; set; }
+		public int loses { get; set; }
+		public List<Match> matches { get; set; }
 	}
 }

@@ -1,9 +1,9 @@
 ﻿namespace GGStat_Backend.models
 {
-	public class Match
+	public class Match 
 	{
 		public string result { get; set; }
-		public string points { get; set; }
+		public int points { get; set; }
 		public string timeAgo { get; set; }
 		public string map { get; set; }
 		public string duration { get; set; }

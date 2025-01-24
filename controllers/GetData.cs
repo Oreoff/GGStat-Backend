@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ISO3166;
+using Nager.Country;
 
 namespace GGStat_Backend.controllers
 {
@@ -12,15 +14,19 @@ namespace GGStat_Backend.controllers
     {
 		public static async Task<string> GetCountry(string player, int gateway_id)
 		{
-		
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{player}/{gateway_id}?request_flags=scr_profile");
 			var jsonDoc = JsonDocument.Parse(json);
-			var country = jsonDoc.RootElement.GetProperty("country_code");
-			return country.ToString();
+
+			var alpha3Code = jsonDoc.RootElement.GetProperty("country_code").GetString();
+
+			var countryProvider = new CountryProvider();
+			var countries = countryProvider.GetCountries();
+			var alpha2Code = countries.FirstOrDefault(c => c.Alpha3Code.ToString() == alpha3Code);
+			if (alpha2Code != null) return alpha2Code.Alpha2Code.ToString();
+			else return "Unknown";
 		}
 		public static async Task<List<Match>> GetMatchHistory(string player, int gateway_id)
 		{
-			// Вбудована функція для обчислення часу, що минув з моменту гри
 			string GetTime(long unixTime)
 			{
 				DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTime);
@@ -104,7 +110,7 @@ namespace GGStat_Backend.controllers
 			}
 			string CalcLeague(int points)
 			{
-				if (points > 1137) return "F";
+				if (points < 1137) return "F";
 				else if (points <= 1137 && points > 1426) return "E";
 				else if (points <= 1426 && points > 1549) return "D";
 				else if (points <= 1549 && points > 1697) return "C";
@@ -135,7 +141,7 @@ namespace GGStat_Backend.controllers
 						region = GetRegion(row[2].GetInt32()),
 						avatar = row[9].GetString(),
 					},
-					country = new Country
+					country = new CountryInfo
 					{
 						name = _country,
 						flag = $"https://flagcdn.com/w40/{_country.ToLower()}.png",

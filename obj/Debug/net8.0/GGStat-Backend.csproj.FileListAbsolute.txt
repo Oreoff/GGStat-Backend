@@ -40,3 +40,5 @@ C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Mic
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\GGStat-Backend.sourcelink.json
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\data\players.json
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\ISO3166.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Nager.Country.dll

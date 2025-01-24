@@ -2,8 +2,8 @@
 {
 	public class Settings
 	{
-		public static int Port = 52543;
-		public static int BatchSize = 25;
+		public static int Port = 64955;
+		public static int BatchSize = 100;
 		public static int StartBatchNumber = 121;
 		public static int LeaderboardId = 12966;
 		public static int DelayInMs = 300;

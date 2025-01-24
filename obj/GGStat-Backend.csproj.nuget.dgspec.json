@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "ISO3166": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
               "version": "[2.3.0, )"
@@ -56,6 +60,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "Nager.Country": {
+              "target": "Package",
+              "version": "[4.0.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

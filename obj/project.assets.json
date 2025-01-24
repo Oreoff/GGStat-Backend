@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "ISO3166/1.0.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/ISO3166.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/ISO3166.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Cors/2.3.0": {
         "type": "package",
         "dependencies": {
@@ -290,6 +299,19 @@
           }
         }
       },
+      "Nager.Country/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Nager.Country.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Nager.Country.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -416,6 +438,20 @@
     }
   },
   "libraries": {
+    "ISO3166/1.0.4": {
+      "sha512": "ApT7VLnfxfS0fnayegZS1QzjALTnuHTwjaN1fqsiMBEC3D+0qiwnNHi+oaJ5pS2/C9D06KV1bc+CF6t7Iqmu3g==",
+      "type": "package",
+      "path": "iso3166/1.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "iso3166.1.0.4.nupkg.sha512",
+        "iso3166.nuspec",
+        "lib/net20/ISO3166.dll",
+        "lib/netstandard1.0/ISO3166.dll",
+        "lib/netstandard2.0/ISO3166.dll"
+      ]
+    },
     "Microsoft.AspNetCore.Cors/2.3.0": {
       "sha512": "AVVAOi4oGar9+7pFYGWw5NeD8qITe+lswIawJJ64zuLpU5YYdW90ALM8XDsYjEulNLziM3qgqjoLaWpr9Ic4vQ==",
       "type": "package",
@@ -1084,6 +1120,29 @@
         "microsoft.openapi.nuspec"
       ]
     },
+    "Nager.Country/4.0.0": {
+      "sha512": "fxBi2O9KxFT1ndwSJk9suxzCe3YQYT15qHk3a7ZOoxOH5q8IYT+qvYAoZg7ecjUSqZoIKsgL1lJnGegDua0mCA==",
+      "type": "package",
+      "path": "nager.country/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "icon.png",
+        "lib/net48/Nager.Country.dll",
+        "lib/net48/Nager.Country.xml",
+        "lib/net6.0/Nager.Country.dll",
+        "lib/net6.0/Nager.Country.xml",
+        "lib/netstandard2.0/Nager.Country.dll",
+        "lib/netstandard2.0/Nager.Country.xml",
+        "lib/netstandard2.1/Nager.Country.dll",
+        "lib/netstandard2.1/Nager.Country.xml",
+        "nager.country.4.0.0.nupkg.sha512",
+        "nager.country.nuspec",
+        "readme.txt"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -1274,9 +1333,11 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "ISO3166 >= 1.0.4",
       "Microsoft.AspNetCore.Cors >= 2.3.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 8.0.0",
       "Microsoft.AspNetCore.OpenApi >= 8.0.2",
+      "Nager.Country >= 4.0.0",
       "Newtonsoft.Json >= 13.0.3",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
@@ -1325,6 +1386,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "ISO3166": {
+            "target": "Package",
+            "version": "[1.0.4, )"
+          },
           "Microsoft.AspNetCore.Cors": {
             "target": "Package",
             "version": "[2.3.0, )"
@@ -1336,6 +1401,10 @@
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[8.0.2, )"
+          },
+          "Nager.Country": {
+            "target": "Package",
+            "version": "[4.0.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

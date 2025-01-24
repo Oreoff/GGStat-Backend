@@ -23,7 +23,7 @@ namespace GGStat_Backend
 			try
 			{
 			
-				int offset = 10; 
+				int offset = 0; 
 				var playersFromApi = await GetData.GetPlayersAsync(offset);
 
 				string serializedData = JsonConvert.SerializeObject(playersFromApi, Formatting.Indented);

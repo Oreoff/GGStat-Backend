@@ -12,6 +12,34 @@ namespace GGStat_Backend.controllers
 {
     internal class GetData
     {
+		public static async Task<string> GetLinkAsync(string match_id)
+		{
+			if (string.IsNullOrWhiteSpace(match_id))
+				return " ";
+
+			// Отримуємо JSON з API
+			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v1/matchmaker-gameinfo-playerinfo/{match_id}");
+			var jsonDoc = JsonDocument.Parse(json);
+
+			// Перевіряємо, чи існує поле "replays"
+			if (jsonDoc.RootElement.TryGetProperty("replays", out var replaysElement) && replaysElement.ValueKind == JsonValueKind.Array)
+			{
+				foreach (var replay in replaysElement.EnumerateArray())
+				{
+					// Перевіряємо, чи існує поле "url" у кожному об'єкті масиву
+					if (replay.TryGetProperty("url", out var urlElement))
+					{
+						var match_link = urlElement.GetString();
+						if (!string.IsNullOrWhiteSpace(match_link))
+						{
+							return match_link; // Повертаємо перше знайдене посилання
+						}
+					}
+				}
+			}
+
+			return ""; // Якщо посилання не знайдено
+		}
 		public static async Task<string> GetCountry(string player, int gateway_id)
 		{
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{player}/{gateway_id}?request_flags=scr_profile");
@@ -46,20 +74,21 @@ namespace GGStat_Backend.controllers
 
 			foreach (var game in games.EnumerateArray())
 			{
-				// Отримання атрибутів гри
+				var _match_id = game.GetProperty("match_guid").GetString();
+				
 				var attributes = game.GetProperty("attributes");
 				var mapName = attributes.GetProperty("mapName").GetString();
 				var createTime = game.GetProperty("create_time").GetString();
+				
 				var create_time = int.Parse(createTime);
 				var timeAgo = GetTime(create_time);
-
-				// Отримання інформації про гравців
+				
 				var players = game.GetProperty("players");
 				string playerRace = "";
 				string opponentRace = "";
 				string opponentName = "";
 				string result = "";
-
+				var _match_link = await GetLinkAsync(_match_id);
 				foreach (var playerInfo in players.EnumerateArray())
 				{
 					var playerAttributes = playerInfo.GetProperty("attributes");
@@ -77,10 +106,13 @@ namespace GGStat_Backend.controllers
 						opponentName = toon;
 					}
 				}
-
+				
 
 				var match = new Match
 				{
+				
+					match_id = _match_id,
+					match_link = _match_link,
 					map = mapName,
 					timeAgo = timeAgo,
 					player_race = playerRace,

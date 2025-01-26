@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GGStat-Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dbff0ed4815d2a772254738963b56e1c49268c38")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05c78639d16c7a2a059a46dcf13bf8c6312f1ae5")]
 [assembly: System.Reflection.AssemblyProductAttribute("GGStat-Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GGStat-Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

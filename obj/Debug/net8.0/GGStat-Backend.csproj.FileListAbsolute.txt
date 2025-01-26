@@ -42,3 +42,15 @@ C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\obj\Debug\net8.0\GGS
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\data\players.json
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\ISO3166.dll
 C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Nager.Country.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Npgsql.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\eLaptop\source\repos\GGStat-Backend\GGStat-Backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

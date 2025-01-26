@@ -25,7 +25,7 @@ namespace GGStat_Backend
 			
 				int offset = 0; 
 				var playersFromApi = await GetData.GetPlayersAsync(offset);
-
+				
 				string serializedData = JsonConvert.SerializeObject(playersFromApi, Formatting.Indented);
 
 				Directory.CreateDirectory(Path.GetDirectoryName(_filePath));
@@ -49,11 +49,7 @@ namespace GGStat_Backend
 				{
 					return NotFound("JSON file not found. Please save data first.");
 				}
-
-				// Зчитування JSON із файлу
 				string jsonData = await System.IO.File.ReadAllTextAsync(_filePath);
-
-				// Десеріалізація у список PlayerData
 				var players = JsonConvert.DeserializeObject<List<PlayerData>>(jsonData);
 
 				return Ok(players);

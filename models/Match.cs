@@ -2,6 +2,8 @@
 {
 	public class Match 
 	{
+		public string match_id {  get; set; }
+		public string match_link { get; set; }
 		public string result { get; set; }
 		public int points { get; set; }
 		public string timeAgo { get; set; }

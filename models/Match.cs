@@ -15,6 +15,5 @@ public class Match
 	public string? player_race { get; set; }
 	public string? opponent_race { get; set; }
 	public string? opponent { get; set; }
-
 	public List<Chat>? chat { get; set; } = new List<Chat>();
 }

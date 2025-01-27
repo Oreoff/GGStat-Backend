@@ -20,5 +20,5 @@ public class PlayerData
 	public int wins { get; set; }
 	public int loses { get; set; }
 
-	public List<Match> matches { get; set; }
+	public List<Match>? matches { get; set; } = new List<Match>();
 }

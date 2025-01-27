@@ -15,26 +15,32 @@ namespace GGStat_Backend.data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// Визначення зв'язків
+			// Визначення зв'язків для PlayerData
 			modelBuilder.Entity<PlayerData>()
 				.HasOne(pd => pd.player)
 				.WithMany()
-				.HasForeignKey(pd => pd.PlayerId);
+				.HasForeignKey(pd => pd.PlayerId)
+				.OnDelete(DeleteBehavior.Cascade); // Додано каскадне видалення
 
 			modelBuilder.Entity<PlayerData>()
 				.HasOne(pd => pd.country)
 				.WithMany()
-				.HasForeignKey(pd => pd.CountryId);
+				.HasForeignKey(pd => pd.CountryId)
+				.OnDelete(DeleteBehavior.Cascade); // Додано каскадне видалення
 
 			modelBuilder.Entity<PlayerData>()
 				.HasOne(pd => pd.rank)
 				.WithMany()
-				.HasForeignKey(pd => pd.RankId);
+				.HasForeignKey(pd => pd.RankId)
+				.OnDelete(DeleteBehavior.Cascade); // Додано каскадне видалення
 
+
+			// Визначення зв'язків для чату (якщо є)
 			modelBuilder.Entity<Match>()
 				.HasMany(m => m.chat)
 				.WithOne()
-				.HasForeignKey("MatchId"); 
+				.HasForeignKey("MatchId")
+				.OnDelete(DeleteBehavior.Cascade); // Додано каскадне видалення
 		}
 	}
 }

@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "GGStat_Backend.SetData",
-    "Method": "GetPlayersFromJSON",
+    "Method": "GetPlayersFromDatabase",
     "RelativePath": "api/players",
     "HttpMethod": "GET",
     "IsController": true,
@@ -11,7 +11,7 @@
   },
   {
     "ContainingType": "GGStat_Backend.SetData",
-    "Method": "SavePlayersToJSON",
+    "Method": "SavePlayersToDatabase",
     "RelativePath": "api/players/save",
     "HttpMethod": "POST",
     "IsController": true,

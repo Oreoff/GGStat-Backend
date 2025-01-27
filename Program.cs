@@ -1,4 +1,8 @@
+using GGStat_Backend.data;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<PlayersDBContext>(options =>
+	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowLocalhost", policy =>

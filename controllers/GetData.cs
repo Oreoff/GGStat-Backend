@@ -14,6 +14,7 @@ namespace GGStat_Backend.controllers
     {
 		public static async Task<string> GetLinkAsync(string match_id)
 		{
+			
 			if (string.IsNullOrWhiteSpace(match_id))
 				return " ";
 
@@ -106,11 +107,11 @@ namespace GGStat_Backend.controllers
 						opponentName = toon;
 					}
 				}
-				
+
 
 				var match = new Match
 				{
-				
+					
 					match_id = _match_id,
 					match_link = _match_link,
 					map = mapName,

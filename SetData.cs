@@ -1,12 +1,10 @@
 ﻿
 
-using GGStat_Backend.models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using GGStat_Backend.data;
+using GGStat_Backend.models;
+using Microsoft.EntityFrameworkCore;
 using GGStat_Backend.controllers;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace GGStat_Backend
 {
@@ -14,43 +12,50 @@ namespace GGStat_Backend
 	[ApiController]
 	public class SetData : ControllerBase
 	{
+		private readonly PlayersDBContext _context;
 
-		private readonly string _filePath = "data/players.json";
+		public SetData(PlayersDBContext context)
+		{
+			_context = context;
+		}
 
+		// Збереження даних в базу даних
 		[HttpPost("save")]
-		public async Task<IActionResult> SavePlayersToJSON()
+		public async Task<IActionResult> SavePlayersToDatabase()
 		{
 			try
 			{
-			
-				int offset = 0; 
+				int offset = 5;
 				var playersFromApi = await GetData.GetPlayersAsync(offset);
-				
-				string serializedData = JsonConvert.SerializeObject(playersFromApi, Formatting.Indented);
 
-				Directory.CreateDirectory(Path.GetDirectoryName(_filePath));
+				// Очищення існуючих даних (опціонально)
+				_context.PlayerDatas.RemoveRange(_context.PlayerDatas);
 
-				await System.IO.File.WriteAllTextAsync(_filePath, serializedData);
+				// Додавання нових даних
+				await _context.PlayerDatas.AddRangeAsync(playersFromApi);
+				await _context.SaveChangesAsync();
 
-				return Ok("Data has been saved to JSON file.");
+				return Ok("Data has been saved to the database.");
 			}
 			catch (Exception ex)
 			{
 				return StatusCode(500, $"Error saving data: {ex.Message}");
 			}
 		}
+
+		// Зчитування даних з бази даних
 		[HttpGet]
-		public async Task<IActionResult> GetPlayersFromJSON()
+		public async Task<IActionResult> GetPlayersFromDatabase()
 		{
 			try
 			{
-				// Перевірити, чи файл існує
-				if (!System.IO.File.Exists(_filePath))
-				{
-					return NotFound("JSON file not found. Please save data first.");
-				}
-				string jsonData = await System.IO.File.ReadAllTextAsync(_filePath);
-				var players = JsonConvert.DeserializeObject<List<PlayerData>>(jsonData);
+				var players = await _context.PlayerDatas
+					.Include(pd => pd.player) 
+					.Include(pd => pd.country)
+					.Include(pd => pd.rank)
+					.Include(pd => pd.matches)
+					.ThenInclude(m => m.chat) 
+					.ToListAsync();
 
 				return Ok(players);
 			}

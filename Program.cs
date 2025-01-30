@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 var app = builder.Build();
+
 app.UseCors("AllowLocalhost");
 if (app.Environment.IsDevelopment())
 {

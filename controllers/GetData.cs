@@ -18,28 +18,25 @@ namespace GGStat_Backend.controllers
 			if (string.IsNullOrWhiteSpace(match_id))
 				return " ";
 
-			// Отримуємо JSON з API
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v1/matchmaker-gameinfo-playerinfo/{match_id}");
 			var jsonDoc = JsonDocument.Parse(json);
-
-			// Перевіряємо, чи існує поле "replays"
 			if (jsonDoc.RootElement.TryGetProperty("replays", out var replaysElement) && replaysElement.ValueKind == JsonValueKind.Array)
 			{
 				foreach (var replay in replaysElement.EnumerateArray())
 				{
-					// Перевіряємо, чи існує поле "url" у кожному об'єкті масиву
+	
 					if (replay.TryGetProperty("url", out var urlElement))
 					{
 						var match_link = urlElement.GetString();
 						if (!string.IsNullOrWhiteSpace(match_link))
 						{
-							return match_link; // Повертаємо перше знайдене посилання
+							return match_link;
 						}
 					}
 				}
 			}
 
-			return ""; // Якщо посилання не знайдено
+			return ""; 
 		}
 		public static async Task<string> GetCountry(string player, int gateway_id)
 		{
@@ -65,11 +62,9 @@ namespace GGStat_Backend.controllers
 				return $"{timeElapsed.Days} days, {timeElapsed.Hours} hours, {timeElapsed.Minutes} minutes ago";
 			}
 
-			// Отримання JSON
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{player}/{gateway_id}?request_flags=scr_profile");
 			var jsonDoc = JsonDocument.Parse(json);
 
-			// Доступ до даних гри
 			var games = jsonDoc.RootElement.GetProperty("game_results");
 			List<Match> values = new List<Match>();
 
@@ -89,7 +84,6 @@ namespace GGStat_Backend.controllers
 				string opponentRace = "";
 				string opponentName = "";
 				string result = "";
-				var _match_link = await GetLinkAsync(_match_id);
 				foreach (var playerInfo in players.EnumerateArray())
 				{
 					var playerAttributes = playerInfo.GetProperty("attributes");
@@ -113,7 +107,7 @@ namespace GGStat_Backend.controllers
 				{
 					
 					match_id = _match_id,
-					match_link = _match_link,
+					match_link = null,
 					map = mapName,
 					timeAgo = timeAgo,
 					player_race = playerRace,

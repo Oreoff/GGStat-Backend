@@ -1,6 +1,22 @@
 [
   {
-    "ContainingType": "GGStat_Backend.SetData",
+    "ContainingType": "GGStat_Backend.ApiControllers.MatchesController",
+    "Method": "GetReplayLink",
+    "RelativePath": "api/matches/{matchId}/replay",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "matchId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GGStat_Backend.ApiControllers.SetData",
     "Method": "GetPlayersFromDatabase",
     "RelativePath": "api/players",
     "HttpMethod": "GET",
@@ -10,7 +26,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "GGStat_Backend.SetData",
+    "ContainingType": "GGStat_Backend.ApiControllers.SetData",
     "Method": "SavePlayersToDatabase",
     "RelativePath": "api/players/save",
     "HttpMethod": "POST",

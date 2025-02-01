@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5v8P4m4ScAmsVmGbnLUMREooso74N22luBxGzy6Qpov67DF6JzaE7w0xaEQkwG3/aJTPO7aEdfsK3FMtwfb6FA==",
+  "dgSpecHash": "aa91sa4LpFD+MHITAPuUSLKxQAdLOpMrLREe8o2hYxKwhq6dp74D4msOvrEWQUUyOI99J9+HAawfvqufSfez3Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend.csproj",
+  "projectFilePath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eLaptop\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\eLaptop\\.nuget\\packages\\iso3166\\1.0.4\\iso3166.1.0.4.nupkg.sha512",

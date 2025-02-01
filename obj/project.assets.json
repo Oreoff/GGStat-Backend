@@ -3911,9 +3911,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend.csproj",
-      "projectName": "GGStat-Backend",
-      "projectPath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend.csproj",
+      "projectUniqueName": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
+      "projectName": "GGStat-Backend-Web-Api",
+      "projectPath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
       "packagesPath": "C:\\Users\\eLaptop\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\obj\\",
       "projectStyle": "PackageReference",

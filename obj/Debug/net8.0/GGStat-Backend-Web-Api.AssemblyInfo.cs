@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GGStat-Backend-Web-Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9fc6b2ef336f72b0a38f07f5779e69833dd750f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8efcb2dfe1abbe9b028484abddaa3ae74b880e80")]
 [assembly: System.Reflection.AssemblyProductAttribute("GGStat-Backend-Web-Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GGStat-Backend-Web-Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

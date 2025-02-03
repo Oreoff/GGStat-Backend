@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\GGStat-Backend-Web-Api.props" />
-</Project>

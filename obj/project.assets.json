@@ -3906,19 +3906,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eLaptop\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
+      "projectUniqueName": "C:\\d\\github\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
       "projectName": "GGStat-Backend-Web-Api",
-      "projectPath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
-      "packagesPath": "C:\\Users\\eLaptop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\obj\\",
+      "projectPath": "C:\\d\\github\\GGStat-Backend\\GGStat-Backend-Web-Api.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\d\\github\\GGStat-Backend\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\eLaptop\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3943,7 +3950,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -4011,7 +4019,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200-preview.0.25057.12/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

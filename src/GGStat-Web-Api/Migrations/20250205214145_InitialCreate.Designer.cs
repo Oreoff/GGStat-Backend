@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GGStat_Backend.Migrations
 {
     [DbContext(typeof(PlayersDBContext))]
-    [Migration("20250127133140_AddCreatedAtToPlayer")]
-    partial class AddCreatedAtToPlayer
+    [Migration("20250205214145_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,10 +59,10 @@ namespace GGStat_Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<string>("flag")
+                    b.Property<string>("code")
                         .HasColumnType("text");
 
-                    b.Property<string>("name")
+                    b.Property<string>("flag")
                         .HasColumnType("text");
 
                     b.HasKey("id");
@@ -127,42 +127,33 @@ namespace GGStat_Backend.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("duration")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("map")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("match_id")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("match_link")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("opponent")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("opponent_race")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("player_race")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("points")
                         .HasColumnType("integer");
 
                     b.Property<string>("result")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("timeAgo")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -217,7 +208,8 @@ namespace GGStat_Backend.Migrations
                 {
                     b.HasOne("Match", null)
                         .WithMany("chat")
-                        .HasForeignKey("MatchId");
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Match", b =>

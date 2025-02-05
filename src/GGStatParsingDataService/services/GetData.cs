@@ -33,7 +33,7 @@ namespace GGStat_Backend.controllers
 				DateTime normalDate = dateTime.UtcDateTime;
 				DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
 				TimeSpan timeElapsed = currentDateTime - dateTime;
-				return $"{timeElapsed.Days} days, {timeElapsed.Hours} hours, {timeElapsed.Minutes} minutes ago";
+				return $"{timeElapsed.Days} days {timeElapsed.Hours} hours {timeElapsed.Minutes} minutes ago";
 			}
 
 			
@@ -147,7 +147,7 @@ namespace GGStat_Backend.controllers
 					},
 					country = new CountryInfo
 					{
-						name = _country,
+						code = _country,
 						flag = $"https://flagcdn.com/w40/{_country.ToLower()}.png",
 					},
 					rank = new Rank

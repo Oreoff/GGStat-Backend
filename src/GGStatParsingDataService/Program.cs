@@ -7,22 +7,21 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 int offset = 0;
-var configuration = new ConfigurationBuilder()
-	.SetBasePath(Directory.GetCurrentDirectory())
-	.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-	.Build();
 
-var services = new ServiceCollection();
-services.AddDbContext<PlayersDBContext>(options =>
-	options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-services.AddTransient<SetData>();
-var serviceProvider = services.BuildServiceProvider();
-var setData = serviceProvider.GetRequiredService<SetData>();
-while(offset <= 3000)
+string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
+string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
+
+while (offset <= 25)
 {
-	await setData.SavePlayersToDatabase(offset);
-	Console.WriteLine("New players added");
+	var players = await GetData.GetPlayersAsync(offset); 
+
+	if (players != null && players.Count > 0)
+	{
+		await CsvWriterService.WriteToCsvAsync(players, filePath);
+		Console.WriteLine($"{players.Count} players saved to CSV.");
+	}
+
 	offset += Settings.BatchSize;
 }
 
-Console.WriteLine("Data has been succesfully collected");
+Console.WriteLine("Data has been successfully collected.");

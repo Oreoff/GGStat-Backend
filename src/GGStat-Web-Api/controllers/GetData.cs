@@ -170,7 +170,7 @@ namespace GGStat_Backend.controllers
 					},
 					country = new CountryInfo
 					{
-						name = _country,
+						code = _country,
 						flag = $"https://flagcdn.com/w40/{_country.ToLower()}.png",
 					},
 					rank = new Rank

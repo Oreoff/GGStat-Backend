@@ -17,7 +17,7 @@ namespace GGStat_Backend.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: true),
+                    code = table.Column<string>(type: "text", nullable: true),
                     flag = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -62,9 +62,9 @@ namespace GGStat_Backend.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     standing = table.Column<int>(type: "integer", nullable: false),
-                    playerId = table.Column<int>(type: "integer", nullable: false),
-                    countryid = table.Column<int>(type: "integer", nullable: false),
-                    rankId = table.Column<int>(type: "integer", nullable: false),
+                    PlayerId = table.Column<int>(type: "integer", nullable: false),
+                    CountryId = table.Column<int>(type: "integer", nullable: false),
+                    RankId = table.Column<int>(type: "integer", nullable: false),
                     race = table.Column<string>(type: "text", nullable: false),
                     wins = table.Column<int>(type: "integer", nullable: false),
                     loses = table.Column<int>(type: "integer", nullable: false)
@@ -73,20 +73,20 @@ namespace GGStat_Backend.Migrations
                 {
                     table.PrimaryKey("PK_PlayerDatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayerDatas_CountryInfos_countryid",
-                        column: x => x.countryid,
+                        name: "FK_PlayerDatas_CountryInfos_CountryId",
+                        column: x => x.CountryId,
                         principalTable: "CountryInfos",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlayerDatas_Players_playerId",
-                        column: x => x.playerId,
+                        name: "FK_PlayerDatas_Players_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlayerDatas_Ranks_rankId",
-                        column: x => x.rankId,
+                        name: "FK_PlayerDatas_Ranks_RankId",
+                        column: x => x.RankId,
                         principalTable: "Ranks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -98,16 +98,16 @@ namespace GGStat_Backend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    match_id = table.Column<string>(type: "text", nullable: false),
-                    match_link = table.Column<string>(type: "text", nullable: false),
-                    result = table.Column<string>(type: "text", nullable: false),
+                    match_id = table.Column<string>(type: "text", nullable: true),
+                    match_link = table.Column<string>(type: "text", nullable: true),
+                    result = table.Column<string>(type: "text", nullable: true),
                     points = table.Column<int>(type: "integer", nullable: false),
-                    timeAgo = table.Column<string>(type: "text", nullable: false),
-                    map = table.Column<string>(type: "text", nullable: false),
-                    duration = table.Column<string>(type: "text", nullable: false),
-                    player_race = table.Column<string>(type: "text", nullable: false),
-                    opponent_race = table.Column<string>(type: "text", nullable: false),
-                    opponent = table.Column<string>(type: "text", nullable: false),
+                    timeAgo = table.Column<string>(type: "text", nullable: true),
+                    map = table.Column<string>(type: "text", nullable: true),
+                    duration = table.Column<string>(type: "text", nullable: true),
+                    player_race = table.Column<string>(type: "text", nullable: true),
+                    opponent_race = table.Column<string>(type: "text", nullable: true),
+                    opponent = table.Column<string>(type: "text", nullable: true),
                     PlayerDataId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -138,7 +138,8 @@ namespace GGStat_Backend.Migrations
                         name: "FK_Chats_Matches_MatchId",
                         column: x => x.MatchId,
                         principalTable: "Matches",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -152,19 +153,19 @@ namespace GGStat_Backend.Migrations
                 column: "PlayerDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerDatas_countryid",
+                name: "IX_PlayerDatas_CountryId",
                 table: "PlayerDatas",
-                column: "countryid");
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerDatas_playerId",
+                name: "IX_PlayerDatas_PlayerId",
                 table: "PlayerDatas",
-                column: "playerId");
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerDatas_rankId",
+                name: "IX_PlayerDatas_RankId",
                 table: "PlayerDatas",
-                column: "rankId");
+                column: "RankId");
         }
 
         /// <inheritdoc />

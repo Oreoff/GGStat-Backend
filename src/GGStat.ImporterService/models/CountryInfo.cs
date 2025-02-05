@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-namespace GGStatParsingDataService.models
+namespace GGStat.ImporterService.models
 {
     public class CountryInfo
     {

@@ -56,10 +56,10 @@ namespace GGStat_Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<string>("flag")
+                    b.Property<string>("code")
                         .HasColumnType("text");
 
-                    b.Property<string>("name")
+                    b.Property<string>("flag")
                         .HasColumnType("text");
 
                     b.HasKey("id");

@@ -6,7 +6,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGStatParsingDataService", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGStat-Backend-Web-Api", "src\GGStat-Web-Api\GGStat-Backend-Web-Api.csproj", "{17899F3B-8447-4B08-A86D-DB2AB69D12E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGStat.ImporterService", "src\GGStat.ImporterService\GGStat.ImporterService.csproj", "{8B6D1A38-5748-4E08-A1D5-1B0D87FA9277}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6D21788F-4AEA-4547-8CBE-64874C7F326E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGStat-ImporterService", "src\GGStat-ImporterService\GGStat-ImporterService.csproj", "{77CF7840-6B2F-402C-B230-7232F04D5A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +24,14 @@ Global
 		{17899F3B-8447-4B08-A86D-DB2AB69D12E1}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{17899F3B-8447-4B08-A86D-DB2AB69D12E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17899F3B-8447-4B08-A86D-DB2AB69D12E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B6D1A38-5748-4E08-A1D5-1B0D87FA9277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B6D1A38-5748-4E08-A1D5-1B0D87FA9277}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B6D1A38-5748-4E08-A1D5-1B0D87FA9277}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B6D1A38-5748-4E08-A1D5-1B0D87FA9277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D21788F-4AEA-4547-8CBE-64874C7F326E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D21788F-4AEA-4547-8CBE-64874C7F326E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D21788F-4AEA-4547-8CBE-64874C7F326E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D21788F-4AEA-4547-8CBE-64874C7F326E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77CF7840-6B2F-402C-B230-7232F04D5A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77CF7840-6B2F-402C-B230-7232F04D5A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77CF7840-6B2F-402C-B230-7232F04D5A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77CF7840-6B2F-402C-B230-7232F04D5A54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

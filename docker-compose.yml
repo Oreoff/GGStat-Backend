@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+  ggstat-db-init:
+    image: ${DOCKER_REGISTRY-}ggstatdbinit
+    build:
+      context: .
+      dockerfile: src/GGStat-ImporterService/Dockerfile
+    volumes:
+    - ./db:/app/db
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+    restart: "no" 
+
+  ggstat-backend-web-api:
+    image: ${DOCKER_REGISTRY-}ggstatbackendwebapi
+    build:
+      context: .
+      dockerfile: src/GGStat-Web-Api/Dockerfile
+    depends_on:
+      ggstat-db-init:
+        condition: service_completed_successfully
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  postgres_db:
+    image: postgres:15
+    container_name: ggstat_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: GGStatDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: maxim12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:

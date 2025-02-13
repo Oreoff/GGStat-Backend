@@ -1,4 +1,4 @@
-﻿using GGStat.ImporterService.models;
+﻿using models;
 using System.ComponentModel.DataAnnotations;
 
 public class Match

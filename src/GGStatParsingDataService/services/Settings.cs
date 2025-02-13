@@ -1,4 +1,4 @@
-﻿namespace GGStat_Backend.controllers
+﻿namespace GGStatParsingDataService.services
 {
 	public class Settings
 	{

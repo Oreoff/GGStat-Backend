@@ -7,14 +7,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Nager.Country;
 
-namespace GGStat_Backend.controllers
+namespace GGStatParsingDataService.services
 {
-    internal class GetData
-    {
-		
+	internal class GetData
+	{
+
 		public static async Task<string> GetCountry(string json)
 		{
-			
+
 			var jsonDoc = JsonDocument.Parse(json);
 
 			var alpha3Code = jsonDoc.RootElement.GetProperty("country_code").GetString();
@@ -36,7 +36,7 @@ namespace GGStat_Backend.controllers
 				return $"{timeElapsed.Days} days {timeElapsed.Hours} hours {timeElapsed.Minutes} minutes ago";
 			}
 
-			
+
 			var jsonDoc = JsonDocument.Parse(json);
 
 			var games = jsonDoc.RootElement.GetProperty("game_results");
@@ -45,14 +45,14 @@ namespace GGStat_Backend.controllers
 			foreach (var game in games.EnumerateArray())
 			{
 				var _match_id = game.GetProperty("match_guid").GetString();
-				
+
 				var attributes = game.GetProperty("attributes");
 				var mapName = attributes.GetProperty("mapName").GetString();
 				var createTime = game.GetProperty("create_time").GetString();
-				
+
 				var create_time = int.Parse(createTime);
 				var timeAgo = GetTime(create_time);
-				
+
 				var players = game.GetProperty("players");
 				string playerRace = "";
 				string opponentRace = "";
@@ -79,7 +79,7 @@ namespace GGStat_Backend.controllers
 
 				var match = new Match
 				{
-					
+
 					match_id = _match_id,
 					match_link = null,
 					map = mapName,
@@ -96,7 +96,7 @@ namespace GGStat_Backend.controllers
 
 			return values;
 		}
-		
+
 		public static async Task<List<PlayerData>> GetPlayersAsync(int offset)
 		{
 
@@ -132,9 +132,9 @@ namespace GGStat_Backend.controllers
 				var player_json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{_player}/{_region}?request_flags=scr_profile");
 				var _country = "";
 				var _points = 0;
-					_country = await GetCountry(player_json);
-					_points = row[3].GetInt32();
-				
+				_country = await GetCountry(player_json);
+				_points = row[3].GetInt32();
+
 				var player = new PlayerData
 				{
 					standing = row[0].GetInt32(),
@@ -158,7 +158,7 @@ namespace GGStat_Backend.controllers
 					race = row[10].GetString().Substring(0, 1).ToUpper(),
 					wins = row[4].GetInt32(),
 					loses = row[5].GetInt32(),
-					matches = await GetMatchHistory(row[7].ToString(),player_json)
+					matches = await GetMatchHistory(row[7].ToString(), player_json)
 				};
 				players.Add(player);
 			}

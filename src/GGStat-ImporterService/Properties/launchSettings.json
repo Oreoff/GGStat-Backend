@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GGStat.ImporterService": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

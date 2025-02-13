@@ -1,5 +1,4 @@
-﻿using GGStat_Backend.controllers;
-using GGStatParsingDataService.data;
+﻿using GGStatParsingDataService.data;
 using GGStatParsingDataService.services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

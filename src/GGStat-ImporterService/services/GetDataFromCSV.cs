@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.TypeConversion;
 
-namespace GGStat.ImporterService.services
+namespace services
 {
 	internal class GetDataFromCSV
 	{
-		public static string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
-		public static string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
+
+		public static string filePath = Path.Combine("/app/db", "players.csv");
 
 		public static List<PlayerData> SaveData()
 		{
@@ -122,5 +122,5 @@ namespace GGStat.ImporterService.services
 			}
 		}
 	}
-	}
+}
 

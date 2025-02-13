@@ -1,11 +1,10 @@
-﻿using GGStat.ImporterService.services;
-using GGStat.ImporterService.data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using data;
 
-namespace GGStat.ImporterService.services
+namespace services
 {
 	internal class SetData
 	{
@@ -23,17 +22,17 @@ namespace GGStat.ImporterService.services
 			foreach (var player in playersFromApi)
 			{
 				var existingPlayer = await _context.PlayerDatas
-					.AsNoTracking() 
+					.AsNoTracking()
 					.FirstOrDefaultAsync(p => p.standing == player.standing);
 
 				if (existingPlayer != null)
 				{
-					player.Id = existingPlayer.Id; 
-					_context.PlayerDatas.Update(player); 
+					player.Id = existingPlayer.Id;
+					_context.PlayerDatas.Update(player);
 				}
 				else
 				{
-					await _context.PlayerDatas.AddAsync(player); 
+					await _context.PlayerDatas.AddAsync(player);
 				}
 			}
 

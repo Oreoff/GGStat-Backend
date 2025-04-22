@@ -25,6 +25,7 @@ services:
         condition: service_completed_successfully
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+      - ASPNETCORE_URLS=http://+:5000;https://+:5001
     ports:
       - "5000:5000"
       - "5001:5001"

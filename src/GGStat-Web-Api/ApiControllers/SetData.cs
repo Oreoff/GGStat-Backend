@@ -5,7 +5,6 @@ using GGStat_Backend.data;
 using GGStat_Backend.models;
 using Microsoft.EntityFrameworkCore;
 using GGStat_Backend.controllers;
-using Microsoft.AspNetCore.Mvc;
 namespace GGStat_Backend.ApiControllers
 {
     [Route("api/players")]

@@ -11,7 +11,6 @@ COPY ["src/GGStat-ImporterService/GGStat-ImporterService.csproj", "src/GGStat-Im
 RUN dotnet restore "./src/GGStat-ImporterService/GGStat-ImporterService.csproj"
 COPY . .
 WORKDIR "/src/src/GGStat-ImporterService"
-
 RUN dotnet build "./GGStat-ImporterService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

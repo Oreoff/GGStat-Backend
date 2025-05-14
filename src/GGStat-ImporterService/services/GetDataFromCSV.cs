@@ -73,8 +73,6 @@ namespace services
 			{
 				if (string.IsNullOrWhiteSpace(text))
 					return new List<Match>();
-
-				// Ensure no unwanted characters (like control characters)
 				text = System.Text.RegularExpressions.Regex.Replace(text, @"[\x00-\x1F\x7F]", "");
 
 				return text.Split('|')
@@ -83,17 +81,14 @@ namespace services
 						var fields = m.Split(',');
 						if (fields.Length < 11)
 						{
-							// Log a warning for incomplete data
 							Console.WriteLine($"Warning: Invalid match data format (missing fields): {m}");
-							// Assign default values to missing fields
 							while (fields.Length < 11)
 							{
 								Array.Resize(ref fields, fields.Length + 1);
-								fields[fields.Length - 1] = ""; // Default empty value for missing fields
+								fields[fields.Length - 1] = ""; 
 							}
 						}
 
-						// Return the match object
 						return new Match
 						{
 							match_id = fields[0],
@@ -109,7 +104,7 @@ namespace services
 							chat = null
 						};
 					})
-					.Where(m => m != null) // Remove invalid matches
+					.Where(m => m != null)
 					.ToList();
 			}
 

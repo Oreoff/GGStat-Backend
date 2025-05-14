@@ -3,8 +3,13 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "ggstat-backend-web-api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
-        "ggstat-backend-web-api": "StartDebugging"
+        "ggstat-backend-web-api": "StartDebugging",
+        "ggstat-db-init": "StartWithoutDebugging",
+        "postgres_db": "StartWithoutDebugging"
       }
     }
   }

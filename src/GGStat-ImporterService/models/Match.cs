@@ -5,6 +5,8 @@ public class Match
 {
 	[Key]
 	public int Id { get; set; }
+	public int PlayerDataId { get; set; }
+	public PlayerData PlayerData { get; set; }
 	public string? match_id { get; set; }
 	public string? match_link { get; set; }
 	public string? result { get; set; }

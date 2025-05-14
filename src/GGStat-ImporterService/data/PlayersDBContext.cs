@@ -39,14 +39,18 @@ namespace data
 				.WithMany()
 				.HasForeignKey(pd => pd.RankId)
 				.OnDelete(DeleteBehavior.Cascade);
-
+			modelBuilder.Entity<PlayerData>()
+	.HasMany(pd => pd.matches)
+	.WithOne(m => m.PlayerData)
+	.HasForeignKey(m => m.PlayerDataId)
+	.OnDelete(DeleteBehavior.Cascade);
 
 
 			modelBuilder.Entity<Match>()
-				.HasMany(m => m.chat)
-				.WithOne()
-				.HasForeignKey("MatchId")
-				.OnDelete(DeleteBehavior.Cascade);
+	.HasMany(m => m.chat)
+	.WithOne()
+	.HasForeignKey("MatchId")
+	.OnDelete(DeleteBehavior.Cascade);
 		}
 
 	}

@@ -22,17 +22,17 @@ namespace GGStatParsingDataService.services
 			foreach (var player in playersFromApi)
 			{
 				var existingPlayer = await _context.PlayerDatas
-					.AsNoTracking() // Додаємо, щоб уникнути помилки оновлення
+					.AsNoTracking() 
 					.FirstOrDefaultAsync(p => p.standing == player.standing);
 
 				if (existingPlayer != null)
 				{
-					player.Id = existingPlayer.Id; // Не змінюємо Id, а залишаємо старий
-					_context.PlayerDatas.Update(player); // Оновлюємо запис
+					player.Id = existingPlayer.Id; 
+					_context.PlayerDatas.Update(player); 
 				}
 				else
 				{
-					await _context.PlayerDatas.AddAsync(player); // Додаємо новий запис
+					await _context.PlayerDatas.AddAsync(player); 
 				}
 			}
 

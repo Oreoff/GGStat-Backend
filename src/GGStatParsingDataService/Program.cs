@@ -9,7 +9,7 @@ int offset = 0;
 
 string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
 string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
-
+Settings.Port = await Settings.GetPort();
 while (offset <= 25)
 {
 	var players = await GetData.GetPlayersAsync(offset); 

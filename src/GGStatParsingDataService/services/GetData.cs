@@ -132,7 +132,6 @@ namespace GGStatParsingDataService.services
 				var player_json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{_player}/{_region}?request_flags=scr_profile");
 				var _country = "";
 				var _points = 0;
-				_country = await GetCountry(player_json);
 				_points = row[3].GetInt32();
 
 				var player = new PlayerData
@@ -158,7 +157,7 @@ namespace GGStatParsingDataService.services
 					race = row[10].GetString().Substring(0, 1).ToUpper(),
 					wins = row[4].GetInt32(),
 					loses = row[5].GetInt32(),
-					matches = await GetMatchHistory(row[7].ToString(), player_json)
+					matches = null,
 				};
 				players.Add(player);
 			}

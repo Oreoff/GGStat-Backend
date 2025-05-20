@@ -141,7 +141,7 @@ namespace GGStatParsingDataService.services
 					{
 						name = row[7].GetString(),
 						alias = row[8].GetString(),
-						region = GetRegion(row[2].GetInt32()),
+						region = row[2].GetInt32().ToString(),
 						avatar = row[9].GetString(),
 					},
 					country = new CountryInfo

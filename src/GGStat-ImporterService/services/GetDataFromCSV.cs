@@ -14,22 +14,26 @@ namespace services
 	{
 
 		public static string filePath = Path.Combine("/app/db", "players_with_countries.csv");
-
 		public static List<PlayerData> SaveData()
 		{
 			if (!File.Exists(filePath))
 			{
-				Console.WriteLine("❌ CSV файл не знайдено!");
+				Console.WriteLine("CSV файл не знайдено!");
 				return new List<PlayerData>();
 			}
 
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
-				HasHeaderRecord = true,
+				HasHeaderRecord = false,
+				Delimiter = ",",
 				BadDataFound = context =>
 				{
 					Console.WriteLine($"Bad data found: {context.RawRecord}");
 				},
+				ShouldSkipRecord = record =>
+				{
+					return record.Record.All(string.IsNullOrWhiteSpace);
+				}
 			};
 
 			using (var reader = new StreamReader(filePath))
@@ -52,19 +56,19 @@ namespace services
 	{
 		public PlayerDataMap()
 		{
-			Map(p => p.standing);
-			Map(p => p.player.name);
-			Map(p => p.country.code);
-			Map(p => p.player.alias);
-			Map(p => p.player.region);
-			Map(p => p.player.avatar);
-			Map(p => p.country.flag);
-			Map(p => p.rank.points);
-			Map(p => p.rank.league);
-			Map(p => p.race);
-			Map(p => p.wins);
-			Map(p => p.loses);
-			Map(p => p.matches).TypeConverter<MatchListConverter>();
+			Map(p => p.standing).Index(0);
+			Map(p => p.player.name).Index(1);
+			Map(p => p.country.code).Index(2);
+			Map(p => p.rank.points).Index(3);
+			Map(p => p.player.alias).Index(4);
+			Map(p => p.country.flag).Index(5);
+			Map(p => p.rank.league).Index(6);
+			Map(p => p.player.region).Index(7);
+			Map(p => p.player.avatar).Index(8);
+			Map(p => p.race).Index(9);
+			Map(p => p.wins).Index(10);
+			Map(p => p.loses).Index(11);
+			Map(p => p.matches).Index(12).TypeConverter<MatchListConverter>();
 
 		}
 		public class MatchListConverter : DefaultTypeConverter
@@ -76,37 +80,47 @@ namespace services
 				text = System.Text.RegularExpressions.Regex.Replace(text, @"[\x00-\x1F\x7F]", "");
 
 				return text.Split('|')
-					.Select(m =>
+					.Select(m => 
 					{
-						var fields = m.Split(',');
-						if (fields.Length < 11)
-						{
-							Console.WriteLine($"Warning: Invalid match data format (missing fields): {m}");
-							while (fields.Length < 11)
-							{
-								Array.Resize(ref fields, fields.Length + 1);
-								fields[fields.Length - 1] = ""; 
-							}
-						}
 
-						return new Match
+						var fields = m.Split(';');
+						if (fields.Length > 3)
 						{
-							match_id = fields[0],
-							match_link = fields[1],
-							result = fields[2],
-							points = int.TryParse(fields[3], out int p) ? p : 0,
-							timeAgo = fields[4],
-							map = fields[5],
-							duration = fields[6],
-							player_race = fields[7],
-							opponent_race = fields[8],
-							opponent = fields[9],
-							chat = null
-						};
+							var timeAndMap = fields[4].Split(',', 2);
+							string timeAgo = timeAndMap.Length > 0 ? timeAndMap[0] : "";
+							string map = timeAndMap.Length > 1 ? timeAndMap[1] : "";
+							if (fields.Length < 11)
+							{
+								Console.WriteLine($"Warning: Invalid match data format (missing fields): {m}");
+								while (fields.Length < 11)
+								{
+									Array.Resize(ref fields, fields.Length + 1);
+									fields[fields.Length - 1] = "";
+								}
+							}
+
+							return new Match
+							{
+								match_id = fields[0],
+								match_link = fields[1],
+								result = fields[2],
+								points = int.TryParse(fields[3], out int p) ? p : 0,
+								timeAgo = timeAgo,
+								map = map,
+								duration = fields[5],
+								player_race = fields[6],
+								opponent_race = fields[7],
+								opponent = fields[8],
+								chat = null
+							};
+						}
+						else return null; 
 					})
 					.Where(m => m != null)
 					.ToList();
 			}
+						
+			
 
 			public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
 			{

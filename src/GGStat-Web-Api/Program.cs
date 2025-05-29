@@ -8,8 +8,6 @@ namespace GGStat_Backend
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-
-
 			builder.Services.AddDbContext<PlayersDBContext>(options =>
 				options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -22,29 +20,21 @@ namespace GGStat_Backend
 						  .AllowAnyMethod();
 				});
 			});
-
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-
 			builder.Services.AddControllers().AddNewtonsoftJson();
-
 			var app = builder.Build();
-
 			using (var scope = app.Services.CreateScope())
 			{
 				var dbContext = scope.ServiceProvider.GetRequiredService<PlayersDBContext>(); 
 			}
-
 			app.UseCors("AllowLocalhost");
-
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
-
 			app.MapControllers();
-
 			app.Run();
 		}
 	}

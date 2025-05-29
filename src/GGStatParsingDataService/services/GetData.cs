@@ -45,7 +45,6 @@ namespace GGStatParsingDataService.services
 			foreach (var game in games.EnumerateArray())
 			{
 				var _match_id = game.GetProperty("match_guid").GetString();
-
 				var attributes = game.GetProperty("attributes");
 				var mapName = attributes.GetProperty("mapName").GetString();
 				var createTime = game.GetProperty("create_time").GetString();
@@ -93,13 +92,10 @@ namespace GGStatParsingDataService.services
 
 				values.Add(match);
 			}
-
 			return values;
 		}
-
 		public static async Task<List<PlayerData>> GetPlayersAsync(int offset)
 		{
-
 			string GetRegion(int gateway_id)
 			{
 				if (gateway_id == 20) return "Europe";
@@ -118,7 +114,6 @@ namespace GGStatParsingDataService.services
 				else if (points >= 1697 && points < 2014) return "B";
 				else if (points >= 2014 && points < 2370) return "A";
 				else return "S";
-
 			}
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset={offset}&length={Settings.BatchSize}");
 			var jsonDoc = JsonDocument.Parse(json);

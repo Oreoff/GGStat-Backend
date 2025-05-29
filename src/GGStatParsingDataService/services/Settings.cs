@@ -24,7 +24,6 @@ namespace GGStatParsingDataService.services
 		ep.Address.Equals(IPAddress.IPv6Loopback))
 	.Select(ep => ep.Port)
 	.ToHashSet(); 
-
 			var localConnections = IPGlobalProperties
 				.GetIPGlobalProperties()
 				.GetActiveTcpConnections()
@@ -38,7 +37,6 @@ namespace GGStatParsingDataService.services
 				int port = endpoint.LocalEndPoint.Port;
 				Console.WriteLine(port);
 				string url = $"http://127.0.0.1:{port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset=0&length={Settings.BatchSize}";
-
 				try
 				{
 					var response = await httpClient.GetAsync(url);
@@ -50,13 +48,11 @@ namespace GGStatParsingDataService.services
 				}
 				catch (HttpRequestException)
 				{
-
 				}
 				catch (TaskCanceledException)
 				{
 				}
 			}
-
 			Console.WriteLine(" Could not find SCR web UI server.");
 			return 0;
 		}

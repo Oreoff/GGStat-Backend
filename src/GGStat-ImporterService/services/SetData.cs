@@ -18,7 +18,7 @@ namespace services
 		public async Task SavePlayersToDatabase()
 		{
 			var playersFromCsv = GetDataFromCSV.SaveData();
-			Console.WriteLine($"📦 Players loaded from CSV: {playersFromCsv.Count}");
+			Console.WriteLine($"Players loaded from CSV: {playersFromCsv.Count}");
 
 			foreach (var player in playersFromCsv)
 			{

@@ -2,4 +2,3 @@ bin/
 obj/
 *.user
 .vs/
-db/players_with_countries.csv

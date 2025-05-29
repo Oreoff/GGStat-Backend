@@ -21,4 +21,15 @@ public class PlayerData
 	public int loses { get; set; }
 
 	public List<Match>? matches { get; set; } = new List<Match>();
+
+	public string MatchesStr => string.Join("|", matches == null
+		? string.Empty
+		: matches.Select(m =>
+			$"{m.match_id};{m.match_link};{m.result};{m.points};{m.timeAgo};" +
+			$"{m.map};{m.duration};{m.player_race};{m.opponent_race};{m.opponent}"));
+
+	public override string ToString()
+	{
+		return this.standing.ToString() + player.name + country.code;
+	}
 }

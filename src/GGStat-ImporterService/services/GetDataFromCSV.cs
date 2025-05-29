@@ -24,7 +24,7 @@ namespace services
 
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
-				HasHeaderRecord = true,
+				HasHeaderRecord = false,
 				Delimiter = ",",
 				BadDataFound = context =>
 				{
@@ -56,20 +56,19 @@ namespace services
 	{
 		public PlayerDataMap()
 		{
-			Map(p => p.standing).Name("standing");
-			Map(p => p.player.name).Name("name");
-			Map(p => p.country.code).Name("code");
-			Map(p => p.rank.points).Name("points");
-			Map(p => p.player.alias).Name("alias");
-			Map(p => p.country.flag).Name("flag");
-			Map(p => p.rank.league).Name("league");
-			Map(p => p.player.region).Name("region");
-			Map(p => p.player.avatar).Name("avatar");
-			Map(p => p.race).Name("race");
-			Map(p => p.wins).Name("wins");
-			Map(p => p.loses).Name("loses");
-			Map(p => p.matches).Name("matches").TypeConverter<MatchListConverter>();
-
+			Map(p => p.standing).Index(0);
+			Map(p => p.player.name).Index(1);
+			Map(p => p.country.code).Index(2);
+			Map(p => p.rank.points).Index(3);
+			Map(p => p.player.alias).Index(4);
+			Map(p => p.country.flag).Index(5);
+			Map(p => p.rank.league).Index(6);
+			Map(p => p.player.region).Index(7);
+			Map(p => p.player.avatar).Index(8);
+			Map(p => p.race).Index(9);
+			Map(p => p.wins).Index(10);
+			Map(p => p.loses).Index(11);
+			Map(p => p.matches).Index(12).TypeConverter<MatchListConverter>();
 		}
 		public class MatchListConverter : DefaultTypeConverter
 		{

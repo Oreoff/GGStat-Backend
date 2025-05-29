@@ -45,6 +45,7 @@ namespace GGStatParsingDataService.services
 			foreach (var game in games.EnumerateArray())
 			{
 				var _match_id = game.GetProperty("match_guid").GetString();
+
 				var attributes = game.GetProperty("attributes");
 				var mapName = attributes.GetProperty("mapName").GetString();
 				var createTime = game.GetProperty("create_time").GetString();
@@ -92,39 +93,25 @@ namespace GGStatParsingDataService.services
 
 				values.Add(match);
 			}
+
 			return values;
 		}
+
 		public static async Task<List<PlayerData>> GetPlayersAsync(int offset)
 		{
-			string GetRegion(int gateway_id)
-			{
-				if (gateway_id == 20) return "Europe";
-				else if (gateway_id == 30) return "Korea";
-				else if (gateway_id == 10) return "US West";
-				else if (gateway_id == 11) return "US East";
-				else if (gateway_id == 45) return "Asia";
-				else return " ";
-			}
-			string CalcLeague(int points)
-			{
-				if (points < 1137) return "F";
-				else if (points >= 1137 && points < 1426) return "E";
-				else if (points >= 1426 && points < 1549) return "D";
-				else if (points >= 1549 && points < 1697) return "C";
-				else if (points >= 1697 && points < 2014) return "B";
-				else if (points >= 2014 && points < 2370) return "A";
-				else return "S";
-			}
 			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset={offset}&length={Settings.BatchSize}");
+
 			var jsonDoc = JsonDocument.Parse(json);
+
 			var rows = jsonDoc.RootElement.GetProperty("rows");
+
 			List<PlayerData> players = new List<PlayerData>();
 
 			foreach (var row in rows.EnumerateArray())
 			{
 				var _player = row[7].GetString();
 				var _region = row[2].GetInt32();
-				var player_json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{_player}/{_region}?request_flags=scr_profile");
+				//var player_json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v2/aurora-profile-by-toon/{_player}/{_region}?request_flags=scr_profile");
 				var _country = "";
 				var _points = 0;
 				_points = row[3].GetInt32();
@@ -149,14 +136,36 @@ namespace GGStatParsingDataService.services
 						points = _points,
 						league = CalcLeague(_points),
 					},
-					race = row[10].GetString().Substring(0, 1).ToUpper(),
+					race = row[10].GetString() == null || row[10].GetString().Length < 1  ?  string.Empty : row[10].GetString().Substring(0, 1).ToUpper(),
 					wins = row[4].GetInt32(),
 					loses = row[5].GetInt32(),
 					matches = null,
 				};
 				players.Add(player);
 			}
+
 			return players;
+
+			string GetRegion(int gateway_id)
+			{
+				if (gateway_id == 20) return "Europe";
+				else if (gateway_id == 30) return "Korea";
+				else if (gateway_id == 10) return "US West";
+				else if (gateway_id == 11) return "US East";
+				else if (gateway_id == 45) return "Asia";
+				else return " ";
+			}
+			string CalcLeague(int points)
+			{
+				if (points < 1137) return "F";
+				else if (points >= 1137 && points < 1426) return "E";
+				else if (points >= 1426 && points < 1549) return "D";
+				else if (points >= 1549 && points < 1697) return "C";
+				else if (points >= 1697 && points < 2014) return "B";
+				else if (points >= 2014 && points < 2370) return "A";
+				else return "S";
+
+			}
 		}
 
 	}

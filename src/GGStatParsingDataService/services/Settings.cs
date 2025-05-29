@@ -24,6 +24,7 @@ namespace GGStatParsingDataService.services
 		ep.Address.Equals(IPAddress.IPv6Loopback))
 	.Select(ep => ep.Port)
 	.ToHashSet(); 
+
 			var localConnections = IPGlobalProperties
 				.GetIPGlobalProperties()
 				.GetActiveTcpConnections()
@@ -31,15 +32,18 @@ namespace GGStatParsingDataService.services
 					(conn.LocalEndPoint.Address.Equals(IPAddress.Loopback) &&
 					loopbackPorts.Contains(conn.LocalEndPoint.Port) ))
 				.ToList();
-
-			foreach (var endpoint in localConnections)
+			var i = 0;
+			
+			foreach (var port in localConnections.Select(x=>x.LocalEndPoint.Port).Distinct())
 			{
-				int port = endpoint.LocalEndPoint.Port;
-				Console.WriteLine(port);
+				Console.WriteLine(port + " " + i.ToString());
+				i++;
 				string url = $"http://127.0.0.1:{port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset=0&length={Settings.BatchSize}";
+
 				try
 				{
-					var response = await httpClient.GetAsync(url);
+					var ct = new CancellationTokenSource(3000);
+					var response = await httpClient.GetAsync(url, ct.Token);
 					if (response.IsSuccessStatusCode)
 					{
 						Console.WriteLine($"StarCraft local web UI found on port {port}");
@@ -48,11 +52,13 @@ namespace GGStatParsingDataService.services
 				}
 				catch (HttpRequestException)
 				{
+
 				}
 				catch (TaskCanceledException)
 				{
 				}
 			}
+
 			Console.WriteLine(" Could not find SCR web UI server.");
 			return 0;
 		}

@@ -26,36 +26,32 @@ public class PlayerDataMap : ClassMap<PlayerData>
 		Map(p => p.wins);
 		Map(p => p.loses);
 		Map(p => p.matches);
-
 	}
-
-
 }
 
 namespace GGStatParsingDataService.services
 {
 	internal class CSVWorker
 	{
-	public static async Task WriteLeaderboardToCSV()
+		public static async Task WriteLeaderboardToCSV()
 		{
-			int offset = 0;
-			List <PlayerData> list = new List<PlayerData>();
-			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
+			int offset = 2001 * Settings.BatchSize;
+			List<PlayerData> list = new List<PlayerData>();
+			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent
+				.FullName;
 			string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
 			Settings.Port = await Settings.GetPort();
-			while (offset <= 50)
+			while (offset <= 75)
 			{
 				int retryCount = 0;
 				bool success = false;
 
-				while (!success && retryCount < 5)
+				while (!success && retryCount < 7)
 				{
 					try
 					{
 						var players = await GetData.GetPlayersAsync(offset);
-						foreach( PlayerData p in players ) {
-							list.Add(p);
-						}
+						list.AddRange(players);
 						offset += Settings.BatchSize;
 						success = true;
 					}
@@ -76,86 +72,47 @@ namespace GGStatParsingDataService.services
 					}
 				}
 
-			}
-			if (list != null && list.Count > 0)
-			{
-				await CsvWriterService.WriteToCsvAsync(list, filePath);
-				Console.WriteLine($"{list.Count} players saved to CSV.");
-			}
-			Console.WriteLine("Data has been successfully collected.");
-		}
-		public static async Task WriteCountriesToCSV(List<PlayerData> players)
-		{
-
-			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
-			string filePath = Path.Combine(solutionDirectory, "db", "players_with_countries.csv");			
-				int retryCount = 0;
-				bool success = false;
-
-				while (!success && retryCount < 5)
+				if (list is { Count: > 0 })
 				{
-					try
-					{
-						if (players != null && players.Count > 0)
-						{
-							await CsvWriterService.WriteToCSVWithCountry(players, filePath);
-							Console.WriteLine($"{players.Count} players saved to CSV.");
-						}
-						success = true;
-					}
-					catch (Exception ex)
-					{
-						retryCount++;
-						Console.WriteLine($"Error occurred (attempt {retryCount}/5): {ex.Message}");
-
-						if (retryCount == 5)
-						{
-							Console.WriteLine("Maximum retry attempts reached. Exiting program.");
-							Environment.Exit(1);
-						}
-						else
-						{
-							await Task.Delay(1000);
-						}
-					}
+					var firstRow = offset == Settings.BatchSize;
+					await CsvWriterService.WriteToCsvAsync(list, filePath, firstRow);
+					Console.WriteLine($"{list.Count} players saved to CSV.");
 				}
+
+				list.Clear();
+
+			}
+
 			Console.WriteLine("Data has been successfully collected.");
 		}
 
-			
-		
-		public static string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
+		public static string solutionDirectory =
+			Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
+
 		public static string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
-		public static async Task<List<PlayerData>> SaveData()
+
+		public static async Task<List<PlayerData>> ReadData()
 		{
-			
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
 				HasHeaderRecord = true,
-				BadDataFound = context =>
-				{
-					Console.WriteLine($"Bad data found: {context.RawRecord}");
-				},
+				BadDataFound = context => { Console.WriteLine($"Bad data found: {context.RawRecord}"); },
 			};
 
 			using (var reader = new StreamReader(filePath))
 			using (var csv = new CsvReader(reader, csvConfiguration))
 			{
 				csv.Context.RegisterClassMap<PlayerDataMap>();
-
 				var records = csv.GetRecords<PlayerData>().ToList();
-				foreach (var record in records)
-				{
-					Console.WriteLine(record.matches.Count);
-				}
-				Console.WriteLine("Data succesfully written");
-
+				Console.WriteLine("Data succesfully loaded.");
 				return records;
 			}
 		}
-		public static async Task<List<PlayerData>> FindCountry(List<PlayerData> data)
+
+		public static async Task FindCountry(List<PlayerData> data)
 		{
 			var players = new List<PlayerData>();
+
 			string GetRegion(int gateway_id)
 			{
 				if (gateway_id == 20) return "Europe";
@@ -165,11 +122,17 @@ namespace GGStatParsingDataService.services
 				else if (gateway_id == 45) return "Asia";
 				else return " ";
 			}
-			foreach (var player in data)
+
+			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent
+				.FullName;
+			string filePath = Path.Combine(solutionDirectory, "db", "players_with_countries.csv");
+
+			foreach (var player in data.OrderBy(x => x.standing).ToList())
 			{
 				int retryCount = 0;
 				bool success = false;
 
+				PlayerData current = null;
 				while (!success && retryCount < 5)
 				{
 					try
@@ -206,16 +169,19 @@ namespace GGStatParsingDataService.services
 						};
 
 						players.Add(player_item);
+						current = player_item;
 						success = true;
 					}
 					catch (Exception ex)
 					{
 						retryCount++;
-						Console.WriteLine($"Error processing player {player.player.name} (attempt {retryCount}/5): {ex.Message}");
+						Console.WriteLine(
+							$"Error processing player {player.player.name} (attempt {retryCount}/5): {ex.Message}");
 
 						if (retryCount == 5)
 						{
-							Console.WriteLine($"Failed to process player {player.player.name} after 5 attempts. Skipping.");
+							Console.WriteLine(
+								$"Failed to process player {player.player.name} after 5 attempts. Skipping.");
 						}
 						else
 						{
@@ -223,15 +189,12 @@ namespace GGStatParsingDataService.services
 						}
 					}
 				}
+
+				Console.WriteLine(current);
+				await CsvWriterService.WriteToCSVWithCountry(current, filePath);
 			}
-
-			return players;
 		}
-
-
 	}
-	}
-
-	
+}
 
 

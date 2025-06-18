@@ -35,13 +35,19 @@ namespace GGStatParsingDataService.services
 	{
 		public static async Task WriteLeaderboardToCSV()
 		{
-			int offset = 2001 * Settings.BatchSize;
+			int offset = 0;
 			List<PlayerData> list = new List<PlayerData>();
-			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent
-				.FullName;
+			string solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
 			string filePath = Path.Combine(solutionDirectory, "db", "players.csv");
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+
+			bool isFirstBatch = true;
 			Settings.Port = await Settings.GetPort();
-			while (offset <= 75)
+
+			while (offset < 2100)
 			{
 				int retryCount = 0;
 				bool success = false;
@@ -74,13 +80,12 @@ namespace GGStatParsingDataService.services
 
 				if (list is { Count: > 0 })
 				{
-					var firstRow = offset == Settings.BatchSize;
-					await CsvWriterService.WriteToCsvAsync(list, filePath, firstRow);
+					await CsvWriterService.WriteToCsvAsync(list, filePath, isFirstBatch);
+					isFirstBatch = false;
 					Console.WriteLine($"{list.Count} players saved to CSV.");
 				}
 
 				list.Clear();
-
 			}
 
 			Console.WriteLine("Data has been successfully collected.");

@@ -26,8 +26,8 @@ namespace GGStatParsingDataService.services
 			Map(p => p.wins);
 			Map(p => p.loses);
 			Map(p => p.matches);
-		
-	}
+
+		}
 	}
 	public class PlayerDataMapWithCountry : ClassMap<PlayerData>
 	{
@@ -56,21 +56,29 @@ namespace GGStatParsingDataService.services
 	{
 		public static async Task WriteToCsvAsync(List<PlayerData> data, string filePath, bool firstRow = false)
 		{
-			bool fileExists = File.Exists(filePath);
-			
-			using (var writer = new StreamWriter(filePath, append: true))
-			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+			if (data == null || data.Count == 0) return;
+
+			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+			{
+				HasHeaderRecord = firstRow 
+			};
+
+			using (var writer = new StreamWriter(filePath, append: !firstRow, encoding: new UTF8Encoding(firstRow)))
+			using (var csv = new CsvWriter(writer, config)) 
 			{
 				csv.Context.RegisterClassMap<PlayerDataMap>();
-				if (!fileExists)
+
+				if (firstRow)
 				{
 					csv.WriteHeader<PlayerData>();
-					csv.NextRecord();         
+					await csv.NextRecordAsync(); 
 				}
-				
+
 				await csv.WriteRecordsAsync(data);
 			}
 		}
+
+
 		public static async Task WriteToCSVWithCountry(PlayerData data, string filePath)
 		{
 			var cfg = new CsvConfiguration(CultureInfo.InvariantCulture)

@@ -13,7 +13,9 @@ namespace services
 	internal class GetDataFromCSV
 	{
 
-		public static string filePath = Path.Combine("/app/db", "players_with_countries.csv");
+		
+		public static string filePath = Path.Combine( "/app/db", "players_with_countries.csv");
+
 		public static List<PlayerData> SaveData()
 		{
 			if (!File.Exists(filePath))

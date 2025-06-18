@@ -12,13 +12,11 @@ namespace GGStat_Backend.controllers
 {
     internal class GetData
     {
-		public static async Task<string> GetLinkAsync(string match_id)
+		public static async Task<string> GetLinkAsync(string match_id,int port)
 		{
-			
 			if (string.IsNullOrWhiteSpace(match_id))
 				return " ";
-
-			var json = await JsonParser.GetRequest($"http://127.0.0.1:{Settings.Port}/web-api/v1/matchmaker-gameinfo-playerinfo/{match_id}");
+			var json = await JsonParser.GetRequest($"http://127.0.0.1:{port}/web-api/v1/matchmaker-gameinfo-playerinfo/{match_id}");
 			var jsonDoc = JsonDocument.Parse(json);
 			if (jsonDoc.RootElement.TryGetProperty("replays", out var replaysElement) && replaysElement.ValueKind == JsonValueKind.Array)
 			{

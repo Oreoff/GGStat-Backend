@@ -79,7 +79,6 @@ namespace GGStatParsingDataService.services
 
 				var match = new Match
 				{
-
 					match_id = _match_id,
 					match_link = null,
 					map = mapName,

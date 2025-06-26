@@ -13,8 +13,8 @@ namespace services
 	internal class GetDataFromCSV
 	{
 
-		
-		public static string filePath = Path.Combine( "/app/db", "players_with_countries.csv");
+
+		public static string filePath = Path.Combine("/app/db", "players_with_countries.csv");
 
 		public static List<PlayerData> SaveData()
 		{
@@ -59,14 +59,14 @@ namespace services
 		public PlayerDataMap()
 		{
 			Map(p => p.standing).Index(0);
-			Map(p => p.player.name).Index(1);
-			Map(p => p.country.code).Index(2);
-			Map(p => p.rank.points).Index(3);
-			Map(p => p.player.alias).Index(4);
-			Map(p => p.country.flag).Index(5);
-			Map(p => p.rank.league).Index(6);
-			Map(p => p.player.region).Index(7);
-			Map(p => p.player.avatar).Index(8);
+			Map(p => p.name).Index(1);
+			Map(p => p.code).Index(2);
+			Map(p => p.points).Index(3);
+			Map(p => p.alias).Index(4);
+			Map(p => p.flag).Index(5);
+			Map(p => p.league).Index(6);
+			Map(p => p.region).Index(7);
+			Map(p => p.avatar).Index(8);
 			Map(p => p.race).Index(9);
 			Map(p => p.wins).Index(10);
 			Map(p => p.loses).Index(11);

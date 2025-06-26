@@ -47,7 +47,7 @@ namespace GGStatParsingDataService.services
 			bool isFirstBatch = true;
 			Settings.Port = await Settings.GetPort();
 
-			while (offset < 2100)
+			while (offset < 100)
 			{
 				int retryCount = 0;
 				bool success = false;

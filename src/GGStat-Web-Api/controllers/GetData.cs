@@ -33,7 +33,6 @@ namespace GGStat_Backend.controllers
 					}
 				}
 			}
-
 			return ""; 
 		}
 		public static async Task<string> GetCountry(string player, int gateway_id)
@@ -159,23 +158,20 @@ namespace GGStat_Backend.controllers
 				var player = new PlayerData
 				{
 					standing = row[0].GetInt32(),
-					player = new Player
-					{
+					
 						name = row[7].GetString(),
 						alias = row[8].GetString(),
 						region = GetRegion(row[2].GetInt32()),
 						avatar = row[9].GetString(),
-					},
-					country = new CountryInfo
-					{
+					
+					
 						code = _country,
 						flag = $"https://flagcdn.com/w40/{_country.ToLower()}.png",
-					},
-					rank = new Rank
-					{
+					
+					
 						points = _points,
 						league = CalcLeague(_points),
-					},
+				
 					race = row[10].GetString().Substring(0, 1).ToUpper(),
 					wins = row[4].GetInt32(),
 					loses = row[5].GetInt32(),

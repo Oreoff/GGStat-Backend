@@ -6,19 +6,16 @@ public class PlayerData
 	[Key]
 	public int Id { get; set; }
 	public int standing { get; set; }
-
-	public int PlayerId { get; set; } // Зовнішній ключ
-	public Player player { get; set; }
-
-	public int CountryId { get; set; } // Зовнішній ключ
-	public CountryInfo country { get; set; }
-
-	public int RankId { get; set; } // Зовнішній ключ
-	public Rank rank { get; set; }
-
+	public string? name { get; set; }
+	public string? region { get; set; }
+	public string? alias { get; set; }
+	public string? avatar { get; set; }
+	public string? code { get; set; }
+	public string? flag { get; set; }
+	public int points { get; set; }
+	public string league { get; set; }
 	public string race { get; set; }
 	public int wins { get; set; }
 	public int loses { get; set; }
-
 	public List<Match>? matches { get; set; } = new List<Match>();
 }

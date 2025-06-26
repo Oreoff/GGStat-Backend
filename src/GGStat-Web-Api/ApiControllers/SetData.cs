@@ -49,9 +49,7 @@ namespace GGStat_Backend.ApiControllers
             try
             {
                 var players = await _context.PlayerDatas
-                    .Include(pd => pd.player)
-                    .Include(pd => pd.country)
-                    .Include(pd => pd.rank)
+           
                     .Include(pd => pd.matches)
                     .ThenInclude(m => m.chat)
                     .ToListAsync();

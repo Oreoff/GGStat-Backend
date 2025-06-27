@@ -22,7 +22,7 @@ namespace GGStat_Backend.ApiControllers
 		public async Task<PlayerData> GetPlayer(string name)
 		{
 			var originalList = await _context.PlayerDatas
-					.Include(pd => pd.matches)
+					.Include(navigationPropertyPath: pd => pd.matches)
 					.ThenInclude(m => m.chat)
 					.ToListAsync();
 			var player = originalList.Where(p => p.name == name).First();

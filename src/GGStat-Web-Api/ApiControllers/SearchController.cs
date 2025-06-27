@@ -23,7 +23,6 @@ namespace GGStat_Backend.ApiControllers
 			if (string.IsNullOrWhiteSpace(name))
 				return new List<string>();
 			var nicknames = await _context.PlayerDatas
-				.Include(pd => pd)
 				.Where(pd => pd.name.ToLower().Contains(name.ToLower()))
 				.Select(pd => pd.name)
 				.Distinct()

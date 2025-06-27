@@ -12,8 +12,9 @@ namespace GGStat_Backend.data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-		
 
+			modelBuilder.Entity<PlayerData>()
+		.HasMany(p => p.matches);
 			modelBuilder.Entity<Match>()
 				.HasMany(m => m.chat)
 				.WithOne()

@@ -17,26 +17,35 @@ namespace GGStat_Backend.ApiControllers
 			_context = context;
 		}
 		[HttpGet]
-		public async Task <List<CountryTop>> SetCountryTop()
+		public async Task<List<CountryTop>> SetCountryTop()
 		{
-			List<CountryTop> list = new();
-			var originalList =  await _context.PlayerDatas
-					.Include(pd => pd.matches)
-					.ThenInclude(m => m.chat)
-					.ToListAsync();
-			list = originalList.GroupBy(pd => pd.code) 
-		.Select(group => group.OrderByDescending(pd => pd.points).First())
-		.Select(topPlayer => new CountryTop
-		{
-			name = topPlayer.name,
-			region = topPlayer.region,
-			avatar = topPlayer.avatar,
-			code = topPlayer.code,
-			flag = topPlayer.flag,
-			points = topPlayer.points
-		})
-		.ToList();
-	return list;
+			var players = await _context.PlayerDatas
+				.Select(pd => new
+				{
+					pd.name,
+					pd.region,
+					pd.avatar,
+					pd.code,
+					pd.flag,
+					pd.points
+				})
+				.ToListAsync();
+
+			var topPlayers = players
+				.GroupBy(p => p.code)
+				.Select(g => g.OrderByDescending(p => p.points).First())
+				.Select(p => new CountryTop
+				{
+					name = p.name,
+					region = p.region,
+					avatar = p.avatar,
+					code = p.code,
+					flag = p.flag,
+					points = p.points
+				})
+				.ToList();
+
+			return topPlayers;
 		}
 	}
 }

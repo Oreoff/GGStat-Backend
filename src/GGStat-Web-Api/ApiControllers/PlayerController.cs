@@ -19,13 +19,13 @@ namespace GGStat_Backend.ApiControllers
 			_context = context;
 		}
 		[HttpGet("{name}")]
-		public async Task<PlayerData> GetPlayer(string name)
+		public async Task<PlayerData?> GetPlayer(string name)
 		{
-			var originalList = await _context.PlayerDatas
-					.Include(navigationPropertyPath: pd => pd.matches)
+			var player = await _context.PlayerDatas
+				.Include(pd => pd.matches)
 					.ThenInclude(m => m.chat)
-					.ToListAsync();
-			var player = originalList.Where(p => p.name == name).First();
+				.FirstOrDefaultAsync(p => p.name == name);
+
 			return player;
 		}
 	}

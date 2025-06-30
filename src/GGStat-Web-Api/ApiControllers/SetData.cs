@@ -44,22 +44,55 @@ namespace GGStat_Backend.ApiControllers
 			}
 		}
 		[HttpGet]
-        public async Task<IActionResult> GetPlayersFromDatabase()
-        {
-            try
-            {
-                var players = await _context.PlayerDatas
-           
-                    .Include(pd => pd.matches)
-                    .ThenInclude(m => m.chat)
-                    .ToListAsync();
+		public async Task<IActionResult> GetPlayersFromDatabase(
+	int offset = 0,
+	int limit = 25,
+	string country_code = "",
+	[FromQuery(Name = "league")] List<string> league = null,
+	string race = "")
+		{
+			try
+			{
+				var query = _context.PlayerDatas.AsQueryable();
 
-                return Ok(players);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error reading data: {ex.Message}");
-            }
-        }
+				if (!string.IsNullOrEmpty(country_code))
+				{
+					if (country_code.StartsWith("!"))
+					{
+						var excludeCode = country_code.Substring(1); 
+						query = query.Where(p => p.code != excludeCode);
+					}
+					else
+					{
+						query = query.Where(p => p.code == country_code);
+					}
+				}
+				if (!string.IsNullOrEmpty(race))
+				{
+					query = query.Where(p => p.race == race);
+				}
+
+				if (league != null && league.Count() > 0)
+				{
+					query = query.Where(p => league.Contains(p.league));
+				}
+				var totalCount = await query.CountAsync();
+				var players = await query
+					.OrderByDescending(p => p.points)
+					.Skip(offset)
+					.Take(limit)
+					.ToListAsync();
+
+				return Ok(new
+				{
+					players,
+					totalCount
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Error reading data: {ex.Message}");
+			}
+		}
 	}
 }

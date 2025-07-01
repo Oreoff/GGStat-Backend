@@ -25,7 +25,7 @@ namespace GGStat_Backend.ApiControllers
 			var nicknames = await _context.PlayerDatas
 				.Where(pd => pd.name.ToLower().Contains(name.ToLower()))
 				.Select(pd => pd.name)
-				.Distinct()
+				.Take(500)
 				.ToListAsync();
 
 			return nicknames;

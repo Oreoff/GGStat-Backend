@@ -25,11 +25,12 @@ namespace GGStat_Backend.ApiControllers
 			var nicknames = await _context.PlayerDatas
 				.Where(pd => pd.name.ToLower().Contains(name.ToLower()))
 				.Select(pd => pd.name)
-				.Take(500)
+				.Take(5)
 				.ToListAsync();
 
 			return nicknames;
 		}
+		
 	}
 }
 

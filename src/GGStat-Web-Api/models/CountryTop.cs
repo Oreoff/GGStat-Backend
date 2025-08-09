@@ -7,6 +7,7 @@
 		public string? name { get; set; }
 		public string? region { get; set; }
 		public string? avatar { get; set; }
+		public string? alias { get; set; }
 		public int points { get; set; }
 	}
 }

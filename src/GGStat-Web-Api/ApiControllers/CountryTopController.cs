@@ -27,7 +27,8 @@ namespace GGStat_Backend.ApiControllers
 					pd.avatar,
 					pd.code,
 					pd.flag,
-					pd.points
+					pd.points,
+					pd.alias
 				})
 				.ToListAsync();
 
@@ -38,6 +39,7 @@ namespace GGStat_Backend.ApiControllers
 				{
 					name = p.name,
 					region = p.region,
+					alias = p.alias,
 					avatar = p.avatar,
 					code = p.code,
 					flag = p.flag,

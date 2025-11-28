@@ -5,30 +5,47 @@ services:
     image: ${DOCKER_REGISTRY-}ggstatdbinit
     build:
       context: .
-      dockerfile: src/GGStat-ImporterService/Dockerfile
+      dockerfile: src/GGStat-Backend.ImporterService/Dockerfile
     volumes:
-    - ./db:/app/db
+      - shared-db:/app/db
     depends_on:
       postgres_db:
         condition: service_healthy
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
-    restart: "no" 
 
   ggstat-backend-web-api:
     image: ${DOCKER_REGISTRY-}ggstatbackendwebapi
     build:
       context: .
       dockerfile: src/GGStat-Web-Api/Dockerfile
-    depends_on:
-      ggstat-db-init:
-        condition: service_completed_successfully
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
       - ASPNETCORE_URLS=http://+:5000
     ports:
       - "5000:5000"
       - "5001:5001"
+    volumes:
+      - shared-db:/app/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ggstat-parsing-data-service:
+    user: root
+    image: ${DOCKER_REGISTRY-}ggstatparsingdataservice
+    build:
+      context: .
+      dockerfile: src/GGStat-Backend.ParsingDataService/Dockerfile
+    depends_on:
+      ggstat-backend-web-api:
+        condition: service_started
+    environment:
+      - Api__BaseUrl=http://host.docker.internal:5000
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+    volumes:
+      - shared-db:/app/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   postgres_db:
     image: postgres:15
@@ -50,3 +67,4 @@ services:
 
 volumes:
   pg_data:
+  shared-db:

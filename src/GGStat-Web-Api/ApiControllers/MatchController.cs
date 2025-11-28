@@ -17,8 +17,7 @@ namespace GGStat_Backend.ApiControllers
 		[HttpGet("{matchId}/replay")]
 		public async Task<IActionResult> GetReplayLink(string matchId)
 		{
-			var port = await Settings.GetPort();
-			var replayLink = await GetData.GetLinkAsync(matchId,port);
+			var replayLink = await GetData.GetLinkAsync(matchId,Settings.Port);
 			if (string.IsNullOrEmpty(replayLink))
 			{
 				return NotFound("Replay link not found.");

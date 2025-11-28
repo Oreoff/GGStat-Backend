@@ -1,0 +1,59 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  ggstat-backend-web-api:
+    build:
+      context: "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend"
+      dockerfile: "src/GGStat-Web-Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Release/net8.0/GGStat-Backend.Web-Api.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "ggstatbackendwebapi:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\src\\GGStat-Web-Api:/app:rw"
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend:/src:rw"
+    - "C:\\Users\\eLaptop\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"
+  ggstat-db-init:
+    build:
+      context: "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend"
+      dockerfile: "src/GGStat-Backend.ImporterService/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/GGStat-Backend.ImporterService.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "ggstatdbinit:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\src\\GGStat-Backend.ImporterService:/app:rw"
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend:/src:rw"
+    - "C:\\Users\\eLaptop\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"
+  ggstat-parsing-data-service:
+    build:
+      context: "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend"
+      dockerfile: "src/GGStat-Backend.ParsingDataService/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/GGStat-Backend.ParsingDataService.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "ggstatparsingdataservice:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend\\src\\GGStat-Backend.ParsingDataService:/app:rw"
+    - "C:\\Users\\eLaptop\\source\\repos\\GGStat-Backend\\GGStat-Backend:/src:rw"
+    - "C:\\Users\\eLaptop\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"

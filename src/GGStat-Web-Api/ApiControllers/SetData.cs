@@ -17,32 +17,6 @@ namespace GGStat_Backend.ApiControllers
         {
             _context = context;
         }
-
-        [HttpPost("save")]
-		public async Task<IActionResult> SavePlayersToDatabase()
-		{
-			try
-			{
-				int offset = 0;
-				var playersFromApi = await GetData.GetPlayersAsync(offset);
-
-
-				var allPlayers = await _context.PlayerDatas.ToListAsync();
-				_context.PlayerDatas.RemoveRange(allPlayers);
-				await _context.SaveChangesAsync();
-				_context.ChangeTracker.Clear();
-
-
-				await _context.PlayerDatas.AddRangeAsync(playersFromApi);
-				await _context.SaveChangesAsync();
-
-				return Ok("Database has been cleared and new data inserted successfully.");
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, $"Error resetting and saving data: {ex.Message}");
-			}
-		}
 		[HttpGet]
 		public async Task<IActionResult> GetPlayersFromDatabase(
 	int offset = 0,

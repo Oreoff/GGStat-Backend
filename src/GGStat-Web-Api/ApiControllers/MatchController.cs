@@ -1,5 +1,5 @@
-﻿using GGStat_Backend.controllers;
-using GGStat_Backend.data;
+﻿using data;
+using GGStat_Backend.controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GGStat_Backend.ApiControllers
@@ -8,12 +8,6 @@ namespace GGStat_Backend.ApiControllers
 	[ApiController]
 	public class MatchesController : ControllerBase
 	{
-		private readonly PlayersDBContext _context;
-
-		public MatchesController(PlayersDBContext context)
-		{
-			_context = context;
-		}
 		[HttpGet("{matchId}/replay")]
 		public async Task<IActionResult> GetReplayLink(string matchId)
 		{

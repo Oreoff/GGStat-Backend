@@ -1,4 +1,4 @@
-﻿namespace GGStat_Backend.models
+﻿namespace GGStat_Backend.Data
 {
 	public class CountryTop
 	{

@@ -9,6 +9,8 @@ public static class Bootstrap
     public static void DataRegister(this IServiceCollection services, string connectionString)
     {
         services.AddDbContextFactory<PlayersDBContext>(options => options.UseNpgsql(connectionString));
+        services.AddSingleton<IApiRequestToDb,ApiRequestsToDb>();
+       
         services.AddSingleton<IPlayersDbRepository, PlayersDbRepository>();
     }
 }

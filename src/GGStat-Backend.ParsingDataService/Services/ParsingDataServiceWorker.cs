@@ -29,14 +29,6 @@ public class ParsingDataServiceWorker(
             }
             int offset = 0;
             List<PlayerData> list = new List<PlayerData>();
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-            if (File.Exists(CountryCsvFilePath))
-            {
-                File.Delete(CountryCsvFilePath);
-            }
             bool isFirstBatch = true;
                
 

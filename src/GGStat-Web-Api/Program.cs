@@ -1,5 +1,6 @@
+using data;
 using GGStat_Backend.controllers;
-using GGStat_Backend.data;
+using GGStat_Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using PortWrapper;
 
@@ -11,9 +12,7 @@ namespace GGStat_Backend
 		{
 			
 			var builder = WebApplication.CreateBuilder(args);
-			builder.Services.AddDbContext<PlayersDBContext>(options =>
-				options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+			var DefaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("AllowLocalhost", policy =>
@@ -25,6 +24,7 @@ namespace GGStat_Backend
 			});
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSingleton<IPortParser, PortParser>();
+			builder.Services.DataRegister(DefaultConnection);
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddControllers().AddNewtonsoftJson();
 			var app = builder.Build();
@@ -32,11 +32,6 @@ namespace GGStat_Backend
 			{
 				var parser = scope.ServiceProvider.GetRequiredService<IPortParser>();
 				Settings.Port = await parser.GetPort(); 
-			}
-
-			using (var scope = app.Services.CreateScope())
-			{
-				var dbContext = scope.ServiceProvider.GetRequiredService<PlayersDBContext>(); 
 			}
 			app.UseCors("AllowLocalhost");
 			if (app.Environment.IsDevelopment())

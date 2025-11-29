@@ -1,22 +1,18 @@
 ﻿
 
+using data;
 using Microsoft.AspNetCore.Mvc;
-using GGStat_Backend.data;
-using GGStat_Backend.models;
 using Microsoft.EntityFrameworkCore;
 using GGStat_Backend.controllers;
+using GGStat_Backend.Data;
+
 namespace GGStat_Backend.ApiControllers
 {
     [Route("api/players")]
     [ApiController]
-    public class SetData : ControllerBase
+    public class SetData(IApiRequestToDb apiRequestToDb) : ControllerBase
     {
-        private readonly PlayersDBContext _context;
-
-        public SetData(PlayersDBContext context)
-        {
-            _context = context;
-        }
+        
 		[HttpGet]
 		public async Task<IActionResult> GetPlayersFromDatabase(
 	int offset = 0,
@@ -27,40 +23,11 @@ namespace GGStat_Backend.ApiControllers
 		{
 			try
 			{
-				var query = _context.PlayerDatas.AsQueryable();
-
-				if (!string.IsNullOrEmpty(country_code))
-				{
-					if (country_code.StartsWith("!"))
-					{
-						var excludeCode = country_code.Substring(1); 
-						query = query.Where(p => p.code != excludeCode);
-					}
-					else
-					{
-						query = query.Where(p => p.code == country_code);
-					}
-				}
-				if (!string.IsNullOrEmpty(race))
-				{
-					query = query.Where(p => p.race == race);
-				}
-
-				if (league != null && league.Count() > 0)
-				{
-					query = query.Where(p => league.Contains(p.league));
-				}
-				var totalCount = await query.CountAsync();
-				var players = await query
-					.OrderByDescending(p => p.points)
-					.Skip(offset)
-					.Take(limit)
-					.ToListAsync();
-
+				var(totalCount,players) = await apiRequestToDb.GetLeaderboard(offset,limit,country_code,league,race);
 				return Ok(new
 				{
 					players,
-					totalCount
+					totalCount,
 				});
 			}
 			catch (Exception ex)

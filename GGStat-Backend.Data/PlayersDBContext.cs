@@ -13,7 +13,7 @@ namespace data
 	{
 		public PlayersDBContext(DbContextOptions<PlayersDBContext> options) : base(options) { }
 
-		public DbSet<PlayerData> PlayerDatas { get; set; }
+		public DbSet<PlayerData> PlayerData { get; set; }
 		public DbSet<Match> Matches { get; set; }
 		public DbSet<Chat> Chats { get; set; }
 
@@ -21,7 +21,7 @@ namespace data
 		{
 			modelBuilder.Entity<PlayerData>()
 	.HasMany(pd => pd.matches)
-	.WithOne(m => m.PlayerData)
+	.WithOne()
 	.HasForeignKey(m => m.PlayerDataId)
 	.OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<Match>()

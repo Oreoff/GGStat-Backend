@@ -16,7 +16,5 @@ public class Match
 	public string? opponent_race { get; set; }
 	public string? opponent { get; set; }
 	public ICollection<Chat>? chat { get; set; } = new List<Chat>();
-	public PlayerData? PlayerData { get; set; }
-	
 	public int PlayerDataId { get; set; }
 }

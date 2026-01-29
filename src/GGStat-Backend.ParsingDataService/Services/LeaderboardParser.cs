@@ -9,12 +9,14 @@ namespace GGStatParsingDataService.Services
 	public interface ILeaderboardParser
 	{
 		Task<List<PlayerData>> GetPlayersAsync(int offset);
+		
+		Task WriteListAsync(string filePath);
 
 	}
 
-	public class LeaderboardParser(ILogger<LeaderboardParser> logger): ILeaderboardParser
+	public class LeaderboardParser(ILogger<LeaderboardParser> logger, ICsvParserService csvParserService) : ILeaderboardParser
 	{
-		
+
 		public async Task<List<PlayerData>> GetPlayersAsync(int offset)
 		{
 			var url = BuildUrlForLeaderboard(offset);
@@ -60,6 +62,7 @@ namespace GGStatParsingDataService.Services
 				};
 				players.Add(player);
 			}
+
 			return players;
 		}
 
@@ -101,5 +104,63 @@ namespace GGStatParsingDataService.Services
 		{
 			return $"https://flagcdn.com/w40/{_country.ToLower()}.png";
 		}
+
+		public async Task WriteListAsync(string filePath)
+		{
+			int offset = 0;
+			List<PlayerData> list = new List<PlayerData>();
+			bool isFirstBatch = true;
+
+
+			while (offset < Settings.MaxSize)
+			{
+				int retryCount = 0;
+				bool success = false;
+
+				while (!success && retryCount < 7)
+				{
+					try
+					{
+						var players = await GetPlayersAsync(offset);
+						list.AddRange(players);
+						offset += Settings.BatchSize;
+						success = true;
+						
+					}
+					catch (Exception ex)
+					{
+						retryCount++;
+						logger.LogError($"Error occurred (attempt {retryCount}/7): {ex.Message}");
+
+						if (retryCount == 7)
+						{
+							logger.LogError("Maximum retry attempts reached. Exiting program.");
+							Environment.Exit(1);
+						}
+						else
+						{
+							await Task.Delay(1000);
+						}
+					}
+					if (list.Count > 0 )
+					{
+						await csvParserService.WriteLeaderboardToCsvAsync(list, filePath, isFirstBatch);
+						isFirstBatch = false;
+						logger.LogInformation($"{list.Count} players saved to CSV.");
+					}
+					else
+					{
+						logger.LogCritical("No players were found to parse, breaking");
+						break;
+					}
+					list.Clear();
+				}
+			}
+		}
 	}
 }
+
+
+	
+	
+	

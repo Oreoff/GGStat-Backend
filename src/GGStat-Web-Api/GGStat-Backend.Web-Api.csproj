@@ -47,8 +47,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\GGStat-Backend.Data\GGStat-Backend.Data.csproj" />
     <ProjectReference Include="..\..\GGStat-Backend.Infrastructure\GGStat-Backend.Infrastructure.csproj" />
-    <ProjectReference Include="..\GGStat-Backend.ImporterService\GGStat-Backend.ImporterService.csproj" />
-    <ProjectReference Include="..\GGStat-Backend.ParsingDataService\GGStat-Backend.ParsingDataService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

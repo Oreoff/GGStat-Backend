@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace GGStatImporterService.Migrations
+namespace GGStat_Backend.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddChatMatchPlayerDataRelations : Migration
+    public partial class UpdatedMatchFinally : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

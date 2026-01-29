@@ -28,11 +28,11 @@ namespace GGStat_Backend
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddControllers().AddNewtonsoftJson();
 			var app = builder.Build();
-			using (var scope = app.Services.CreateScope())
+			/*using (var scope = app.Services.CreateScope())
 			{
 				var parser = scope.ServiceProvider.GetRequiredService<IPortParser>();
 				Settings.Port = await parser.GetPort(); 
-			}
+			}*/
 			app.UseCors("AllowLocalhost");
 			if (app.Environment.IsDevelopment())
 			{

@@ -12,6 +12,7 @@ namespace GGStatParsingDataService.Services
 	public interface IPlayerInfoParser
 	{
 		Task<List<PlayerData>> GetPlayerInfo(List<PlayerData> data);
+		
 	}
 	public class PlayerInfoParser:IPlayerInfoParser
 	{

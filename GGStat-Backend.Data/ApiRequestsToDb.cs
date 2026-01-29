@@ -23,7 +23,7 @@ public class ApiRequestsToDb: IApiRequestToDb
    public async Task<List<string>> GetCountries()
    {
       await using var context = await _contextFactory.CreateDbContextAsync();
-      return context.PlayerDatas.Select(c => c.code).Distinct().ToList();
+      return context.PlayerData.Select(c => c.code).Distinct().ToList();
    }
 
    public async Task<List<string>> SearchPlayersByName(string name)
@@ -32,7 +32,7 @@ public class ApiRequestsToDb: IApiRequestToDb
 
       if (string.IsNullOrWhiteSpace(name))
          return new List<string>();
-      return await context.PlayerDatas
+      return await context.PlayerData
          .Where(pd => pd.name.ToLower().Contains(name.ToLower()))
          .Select(pd => pd.name)
          .Take(5)
@@ -42,7 +42,7 @@ public class ApiRequestsToDb: IApiRequestToDb
    public async Task<List<CountryTop>> GetCountryTop()
    {
       await using var context = await _contextFactory.CreateDbContextAsync();
-      var players = await context.PlayerDatas
+      var players = await context.PlayerData
          .Select(pd => new
          {
             pd.name,
@@ -76,7 +76,7 @@ public class ApiRequestsToDb: IApiRequestToDb
    public async Task<PlayerData> GetPlayer(string name)
    {
       await using var context = await _contextFactory.CreateDbContextAsync();
-      var player = await context.PlayerDatas
+      var player = await context.PlayerData
          .Include(pd => pd.matches)
          .ThenInclude(m => m.chat)
          .FirstOrDefaultAsync(p => p.name == name);
@@ -87,7 +87,7 @@ public class ApiRequestsToDb: IApiRequestToDb
    public async Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race)
    {
          await using var context = await _contextFactory.CreateDbContextAsync();
-         var query = context.PlayerDatas.AsQueryable();
+         var query = context.PlayerData.AsQueryable();
 
          if (!string.IsNullOrEmpty(country_code))
          {

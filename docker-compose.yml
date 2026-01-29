@@ -7,12 +7,12 @@ services:
       context: .
       dockerfile: src/GGStat-Backend.ImporterService/Dockerfile
     volumes:
-      - shared-db:/app/db
-    depends_on:
-      postgres_db:
-        condition: service_healthy
+      - ./db:/data:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+      - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+      - PLAYER_INFO_CSV=/data/players_with_countries.csv
 
   ggstat-backend-web-api:
     image: ${DOCKER_REGISTRY-}ggstatbackendwebapi
@@ -20,51 +20,12 @@ services:
       context: .
       dockerfile: src/GGStat-Web-Api/Dockerfile
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
-      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
+      - PLAYER_INFO_CSV=/data/players_with_countries.csv
     ports:
       - "5000:5000"
       - "5001:5001"
     volumes:
-      - shared-db:/app/db
+      - ./db:/data:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-  ggstat-parsing-data-service:
-    user: root
-    image: ${DOCKER_REGISTRY-}ggstatparsingdataservice
-    build:
-      context: .
-      dockerfile: src/GGStat-Backend.ParsingDataService/Dockerfile
-    depends_on:
-      ggstat-backend-web-api:
-        condition: service_started
-    environment:
-      - Api__BaseUrl=http://host.docker.internal:5000
-      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
-    volumes:
-      - shared-db:/app/db
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
-  postgres_db:
-    image: postgres:15
-    container_name: ggstat_postgres
-    restart: always
-    environment:
-      POSTGRES_DB: GGStatDB
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: maxim12345
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  pg_data:
-  shared-db:

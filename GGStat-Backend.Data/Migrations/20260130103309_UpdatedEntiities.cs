@@ -5,7 +5,7 @@
 namespace GGStat_Backend.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedMatchFinally : Migration
+    public partial class UpdatedEntiities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

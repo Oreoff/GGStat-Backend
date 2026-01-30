@@ -97,7 +97,7 @@ namespace GGStatParsingDataService.Services
 		private static string BuildUrlForLeaderboard(int offset)
 		{
 			return
-				$"http://host.docker.internal:{Settings.Port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset={offset}&length={Settings.BatchSize}";
+				$"http://localhost:{Settings.Port}/web-api/v1/leaderboard/{Settings.LeaderboardId}?offset={offset}&length={Settings.BatchSize}";
 		}
 
 		private static string GetFlagUrl(string _country)

@@ -181,7 +181,7 @@ namespace GGStatParsingDataService.Services
 		{
 		
 			return
-				$"http://host.docker.internal:{port}/web-api/v2/aurora-profile-by-toon/{player}/{region}?request_flags=scr_profile";
+				$"http://localhost:{port}/web-api/v2/aurora-profile-by-toon/{player}/{region}?request_flags=scr_profile";
 		}
 
 		private static int GetGatewayId(string region)

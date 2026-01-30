@@ -12,7 +12,7 @@ using data;
 namespace GGStat_Backend.Data.Migrations
 {
     [DbContext(typeof(PlayersDBContext))]
-    [Migration("20260129165314_InitialCreate")]
+    [Migration("20260130094955_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -100,7 +100,7 @@ namespace GGStat_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PlayerDatas");
+                    b.ToTable("PlayerData");
                 });
 
             modelBuilder.Entity("Match", b =>
@@ -161,13 +161,11 @@ namespace GGStat_Backend.Data.Migrations
 
             modelBuilder.Entity("Match", b =>
                 {
-                    b.HasOne("GGStat_Backend.Data.PlayerData", "PlayerData")
+                    b.HasOne("GGStat_Backend.Data.PlayerData", null)
                         .WithMany("matches")
                         .HasForeignKey("PlayerDataId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PlayerData");
                 });
 
             modelBuilder.Entity("GGStat_Backend.Data.PlayerData", b =>

@@ -19,6 +19,15 @@ namespace data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			
+			modelBuilder.Entity<PlayerData>()
+				.ToTable("PlayerData");
+
+			modelBuilder.Entity<Match>()
+				.ToTable("Matches");
+
+			modelBuilder.Entity<Chat>()
+				.ToTable("Chats");
 			modelBuilder.Entity<PlayerData>()
 	.HasMany(pd => pd.matches)
 	.WithOne()

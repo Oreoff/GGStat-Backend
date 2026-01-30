@@ -22,7 +22,7 @@ public class ParsingDataServiceWorker(
         {
             var filePath = FileDirectoryParser.GetDirectoryForLeaderboardToDocker();
             var dir = Path.GetDirectoryName(filePath);
-            string CountryCsvFilePath = FileDirectoryParser.GetDirectoryForPlayerInfoToDocker(); 
+            string CountryCsvFilePath = FileDirectoryParser.GetDirectoryForPlayerInfo(); 
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir); 

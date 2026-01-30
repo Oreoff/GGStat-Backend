@@ -12,8 +12,8 @@ using data;
 namespace GGStat_Backend.Data.Migrations
 {
     [DbContext(typeof(PlayersDBContext))]
-    [Migration("20260129170032_UpdatedMatchFinally")]
-    partial class UpdatedMatchFinally
+    [Migration("20260130103309_UpdatedEntiities")]
+    partial class UpdatedEntiities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace GGStat_Backend.Data.Migrations
 
                     b.HasIndex("MatchId");
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chats", (string)null);
                 });
 
             modelBuilder.Entity("GGStat_Backend.Data.PlayerData", b =>
@@ -100,7 +100,7 @@ namespace GGStat_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PlayerData");
+                    b.ToTable("PlayerData", (string)null);
                 });
 
             modelBuilder.Entity("Match", b =>
@@ -148,7 +148,7 @@ namespace GGStat_Backend.Data.Migrations
 
                     b.HasIndex("PlayerDataId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("GGStat_Backend.Data.Chat", b =>

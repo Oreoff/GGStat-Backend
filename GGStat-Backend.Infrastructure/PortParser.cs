@@ -8,57 +8,60 @@ public interface IPortParser
 {
     Task<int> GetPort();
 }
-public class PortParser(ILogger<PortParser> logger): IPortParser
+
+public class PortParser(ILogger<PortParser> logger) : IPortParser
 {
     public async Task<int> GetPort()
     {
-        using var httpClient = new HttpClient();
+        using var httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(3)
+        };
 
-        var loopbackPorts = IPGlobalProperties
-            .GetIPGlobalProperties()
+        var ipProps = IPGlobalProperties.GetIPGlobalProperties();
+
+        var loopbackPorts = ipProps
             .GetActiveTcpListeners()
             .Where(ep =>
                 ep.Address.Equals(IPAddress.Loopback) ||
                 ep.Address.Equals(IPAddress.IPv6Loopback))
             .Select(ep => ep.Port)
-            .ToHashSet(); 
+            .ToHashSet();
 
-        var localConnections = IPGlobalProperties
-            .GetIPGlobalProperties()
+        var portsToCheck = ipProps
             .GetActiveTcpConnections()
             .Where(conn =>
-                (conn.LocalEndPoint.Address.Equals(IPAddress.Loopback) &&
-                 loopbackPorts.Contains(conn.LocalEndPoint.Port) ))
+                conn.LocalEndPoint.Address.Equals(IPAddress.Loopback) &&
+                loopbackPorts.Contains(conn.LocalEndPoint.Port))
+            .Select(conn => conn.LocalEndPoint.Port)   
+            .Distinct()
+            .Order()
             .ToList();
-        var i = 0;
-			
-        for (int port = 49152; port <= 65535; port++)
-        {
-            logger.LogInformation($"Found port: {port}");
-            i++;
 
-            string url = $"http://host.docker.internal:{port}/web-api/v1/leaderboard/12972?offset=0&length=25";
-            logger.LogInformation(url);
+        foreach (var port in portsToCheck)
+        {
+            logger.LogInformation("Checking port {Port}", port);
+
+            var url =
+                $"http://localhost:{port}/web-api/v1/leaderboard/12972?offset=0&length=25";
+
             try
             {
-                var ct = new CancellationTokenSource(3000);
-                var response = await httpClient.GetAsync(url, ct.Token);
+                var response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
-                    logger.LogInformation($"StarCraft local web UI found on port {port}");
-                    return port;
+                    logger.LogInformation(
+                        "StarCraft local web UI found on port {Port}",
+                        port);
+
+                    return port; 
                 }
             }
-            catch (HttpRequestException)
-            {
-                
-            }
-            catch (TaskCanceledException)
-            {
-            }
+            catch (HttpRequestException) { }
+            catch (TaskCanceledException) { }
         }
 
-        Console.WriteLine(" Could not find SCR web UI server.");
+        logger.LogWarning("Could not find SCR web UI server");
         return 0;
     }
 }

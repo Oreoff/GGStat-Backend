@@ -12,7 +12,7 @@ namespace GGStat_Backend.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PlayerDatas",
+                name: "PlayerData",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -32,7 +32,7 @@ namespace GGStat_Backend.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerDatas", x => x.Id);
+                    table.PrimaryKey("PK_PlayerData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,9 +57,9 @@ namespace GGStat_Backend.Data.Migrations
                 {
                     table.PrimaryKey("PK_Matches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Matches_PlayerDatas_PlayerDataId",
+                        name: "FK_Matches_PlayerData_PlayerDataId",
                         column: x => x.PlayerDataId,
-                        principalTable: "PlayerDatas",
+                        principalTable: "PlayerData",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -107,7 +107,7 @@ namespace GGStat_Backend.Data.Migrations
                 name: "Matches");
 
             migrationBuilder.DropTable(
-                name: "PlayerDatas");
+                name: "PlayerData");
         }
     }
 }

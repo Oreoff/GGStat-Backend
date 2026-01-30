@@ -20,7 +20,7 @@ namespace GGStat_Backend.Data
 		public async Task ClearDatabaseAsync()
 		{
 			await using var _context = await _contextFactory.CreateDbContextAsync();
-			await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"PlayerDatas\" RESTART IDENTITY CASCADE;");
+			await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"PlayerData\" RESTART IDENTITY CASCADE;");
 			await _context.SaveChangesAsync();
 			Console.WriteLine("Db cleared");
 		}

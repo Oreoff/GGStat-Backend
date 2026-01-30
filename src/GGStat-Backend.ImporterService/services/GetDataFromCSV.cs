@@ -20,12 +20,11 @@ namespace GGStat_Backend.ImporterService
 	{
 		public List<PlayerData> GetDataFromCsv()
 		{
-			var filePath = FileDirectoryParser.GetDirectoryForPlayerInfoToDocker();
-			if (!File.Exists(filePath))
-			{
-				Console.WriteLine("CSV file not found!");
-				return new List<PlayerData>();
-			}
+			var path = Environment.GetEnvironmentVariable("PLAYER_INFO_CSV");
+
+			if (string.IsNullOrWhiteSpace(path))
+				throw new InvalidOperationException(
+					"PLAYER_INFO_CSV env var is not set");
 
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
@@ -41,7 +40,7 @@ namespace GGStat_Backend.ImporterService
 				}
 			};
 
-			using (var reader = new StreamReader(filePath))
+			using (var reader = new StreamReader(path))
 			using (var csv = new CsvReader(reader, csvConfiguration))
 			{
 				csv.Context.RegisterClassMap<PlayerDataMap>();

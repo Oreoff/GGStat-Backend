@@ -23,7 +23,7 @@ namespace GGStat_Backend.ApiControllers
 		{
 			try
 			{
-				var(totalCount,players) = await apiRequestToDb.GetLeaderboard(offset,limit,country_code,league,race);
+				var(players,totalCount) = await apiRequestToDb.GetLeaderboard(offset,limit,country_code,league,race);
 				return Ok(new
 				{
 					players,

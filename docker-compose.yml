@@ -21,10 +21,10 @@ services:
       dockerfile: src/GGStat-Web-Api/Dockerfile
     environment:
       - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
-      - PLAYER_INFO_CSV=/data/players_with_countries.csv
+      - ASPNETCORE_URLS=http://+:5120
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5120:5120"
     volumes:
       - ./db:/data:ro
     extra_hosts:

@@ -6,7 +6,7 @@ using PortWrapper;
 
 namespace GGStat_Backend
 {
-	public class Program(IPortParser portParser)
+	public class Program()
 	{
 		public static async Task Main(string[] args)
 		{
@@ -17,7 +17,7 @@ namespace GGStat_Backend
 			{
 				options.AddPolicy("AllowLocalhost", policy =>
 				{
-					policy.WithOrigins("http://localhost:3000")
+					policy.WithOrigins("http://localhost:3000","https://ggstat.site")
 						  .AllowAnyHeader()
 						  .AllowAnyMethod();
 				});

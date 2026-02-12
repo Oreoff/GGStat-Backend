@@ -11,8 +11,8 @@ namespace GGStatParsingDataService.Services
 {
 	public interface IPlayerInfoParser
 	{
-		Task<List<PlayerData>> GetPlayerInfo(List<PlayerData> data);
-		
+		Task<List<PlayerData>> GetPlayerInfo(List<PlayerData> data, ICsvParserService csvParserService, string outputFilePath);
+
 	}
 	public class PlayerInfoParser:IPlayerInfoParser
 	{
@@ -116,62 +116,60 @@ namespace GGStatParsingDataService.Services
 		}
 		
 		
-		public async Task<List<PlayerData>> GetPlayerInfo(List<PlayerData> data)
+		public async Task<List<PlayerData>> GetPlayerInfo(List<PlayerData> data, ICsvParserService csvParserService, string outputFilePath)
 		{
 			var players = new List<PlayerData>();
-			foreach (var player in data.OrderBy(x => x.standing).ToList())
+			var sortedData = data.OrderBy(x => x.standing).ToList();
+
+			if (Settings.PlayerInfoOffset > 0)
 			{
-				int retryCount = 0;
-				bool success = false;
-				PlayerData current = null;
-				while (!success && retryCount < 5)
+				int skipped = sortedData.Count(p => p.standing < Settings.PlayerInfoOffset);
+				sortedData = sortedData.Where(p => p.standing >= Settings.PlayerInfoOffset).ToList();
+				Console.WriteLine($"Skipping {skipped} players, starting from standing {Settings.PlayerInfoOffset}");
+			}
+
+			foreach (var player in sortedData)
+			{
+				try
 				{
-					try
+					var _player = player.player.name;
+					var _region = player.player.region;
+					int gatewayId = GetGatewayId(_region);
+					var url = BuildPlayerinfoUrl(_player, gatewayId,Settings.Port);
+					Console.WriteLine(url);
+					var player_json = await HttpParser.GetRequest(url,Settings.Port);
+
+					var _country = await GetCountry(player_json);
+					var mmrStats = GetMmrStats(player_json, _player);
+					var accounts = GetAccounts(player_json);
+
+					var player_item = new PlayerData
 					{
-						var _player = player.player.name;
-						var _region = player.player.region;
-						int gatewayId = GetGatewayId(_region);
-						var url = BuildPlayerinfoUrl(_player, gatewayId,Settings.Port);
-						Console.WriteLine(url);
-						var player_json = await HttpParser.GetRequest(url,Settings.Port);
-
-						var _country = await GetCountry(player_json);
-
-						var player_item = new PlayerData
+						standing = player.standing,
+						player = player.player,
+						country = new CountryInfo
 						{
-							standing = player.standing,
-							player = player.player,
-							country = new CountryInfo
-							{
-								code = _country,
-								flag = GetFlagLink(_country)
-							},
-							rank = player.rank,
-							race = player.race,
-							wins = player.wins,
-							loses = player.loses,
-							matches = await GetMatchHistory(_player, player_json)
-						};
+							code = _country,
+							flag = GetFlagLink(_country)
+						},
+						rank = player.rank,
+						race = player.race,
+						wins = mmrStats.wins > 0 ? mmrStats.wins : player.wins,
+						loses = mmrStats.losses > 0 ? mmrStats.losses : player.loses,
+						max_mmr = mmrStats.maxMmr,
+						current_mmr = mmrStats.currentMmr,
+						accounts = accounts,
+						matches = await GetMatchHistory(_player, player_json)
+					};
 
-						players.Add(player_item);
-						success = true;
-					}
-					catch (Exception ex)
-					{
-						retryCount++;
-						Console.WriteLine(
-							$"Error processing player {player.player.name} (attempt {retryCount}/5): {ex.Message}");
-
-						if (retryCount == 5)
-						{
-							Console.WriteLine(
-								$"Failed to process player {player.player.name} after 5 attempts. Skipping.");
-						}
-						else
-						{
-							await Task.Delay(1000);
-						}
-					}
+					await csvParserService.WriteToCsvWithCountry([player_item], outputFilePath);
+					players.Add(player_item);
+					Console.WriteLine($"Player {_player} saved to CSV. ({player.standing})");
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(
+						$"Error processing player {player.player.name}: {ex.Message}. Skipping.");
 				}
 			}
 			return players;
@@ -200,6 +198,57 @@ namespace GGStatParsingDataService.Services
 		private static string GetFlagLink(string country)
 		{
 			return $"https://flagcdn.com/w40/{country.ToLower()}";
+		}
+
+		private static (int maxMmr, int currentMmr, int wins, int losses) GetMmrStats(string json, string playerToon)
+		{
+			var jsonDoc = JsonDocument.Parse(json);
+			int maxMmr = 0;
+			int currentMmr = 0;
+			int wins = 0;
+			int losses = 0;
+
+			if (jsonDoc.RootElement.TryGetProperty("matchmaked_stats", out var stats) &&
+			    jsonDoc.RootElement.TryGetProperty("matchmaked_current_season", out var currentSeasonEl))
+			{
+				int currentSeason = currentSeasonEl.GetInt32();
+
+				foreach (var entry in stats.EnumerateArray())
+				{
+					if (entry.GetProperty("season_id").GetInt32() != currentSeason)
+						continue;
+
+					var toon = entry.GetProperty("toon").GetString();
+					if (toon != playerToon)
+						continue;
+
+					maxMmr = entry.GetProperty("highest_rating").GetInt32();
+					currentMmr = entry.GetProperty("rating").GetInt32();
+					wins = entry.GetProperty("wins").GetInt32();
+					losses = entry.GetProperty("losses").GetInt32();
+					break;
+				}
+			}
+
+			return (maxMmr, currentMmr, wins, losses);
+		}
+
+		private static string GetAccounts(string json)
+		{
+			var jsonDoc = JsonDocument.Parse(json);
+			var toons = new List<string>();
+
+			if (jsonDoc.RootElement.TryGetProperty("toons", out var toonsArray))
+			{
+				foreach (var toon in toonsArray.EnumerateArray())
+				{
+					var name = toon.GetProperty("toon").GetString();
+					if (!string.IsNullOrWhiteSpace(name))
+						toons.Add(name);
+				}
+			}
+
+			return string.Join(" | ", toons);
 		}
 	}
 }

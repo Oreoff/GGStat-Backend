@@ -107,9 +107,9 @@ namespace GGStatParsingDataService.Services
 
 		public async Task WriteListAsync(string filePath)
 		{
-			int offset = 0;
+			int offset = Settings.PlayerInfoOffset;
 			List<PlayerData> list = new List<PlayerData>();
-			bool isFirstBatch = true;
+			bool isFirstBatch = offset == 0;
 
 
 			while (offset < Settings.MaxSize)

@@ -28,15 +28,21 @@ namespace GGStatParsingDataService.Services
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
 				HasHeaderRecord = true,
+				MissingFieldFound = null,
+				HeaderValidated = null,
 				BadDataFound = context => { Console.WriteLine($"Bad data found: {context.RawRecord}"); },
 			};
 
-			using (var reader = new StreamReader(filePath))
+			using (var reader = new StreamReader(filePath, System.Text.Encoding.UTF8, true, 65536))
 			using (var csv = new CsvReader(reader, csvConfiguration))
 			{
 				csv.Context.RegisterClassMap<PlayerDataMap>();
-				var records = csv.GetRecords<PlayerData>().ToList();
-				Console.WriteLine("Data succesfully loaded.");
+				var records = new List<PlayerData>();
+				await foreach (var record in csv.GetRecordsAsync<PlayerData>())
+				{
+					records.Add(record);
+				}
+				Console.WriteLine($"Data succesfully loaded. {records.Count} records.");
 				return records;
 			}
 		}
@@ -49,7 +55,8 @@ namespace GGStatParsingDataService.Services
 			{
 				HasHeaderRecord = firstRow 
 			};
-
+			Console.WriteLine(filePath);
+			
 			using (var writer = new StreamWriter(filePath, append: !firstRow, encoding: new UTF8Encoding(firstRow)))
 			using (var csv = new CsvWriter(writer, config)) 
 			{

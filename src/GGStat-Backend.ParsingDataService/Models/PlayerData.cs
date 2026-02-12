@@ -21,6 +21,10 @@ namespace GGStatParsingDataService.Models
 		public int wins { get; set; }
 		public int loses { get; set; }
 
+		public int max_mmr { get; set; }
+		public int current_mmr { get; set; }
+		public string? accounts { get; set; }
+
 		public List<Match>? matches { get; set; } = new List<Match>();
 
 		public string MatchesStr => string.Join("|", matches == null

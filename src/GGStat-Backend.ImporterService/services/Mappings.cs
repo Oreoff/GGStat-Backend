@@ -19,6 +19,9 @@ public class PlayerDataMap : ClassMap<PlayerData>
         Map(p => p.race).Index(9);
         Map(p => p.wins).Index(10);
         Map(p => p.loses).Index(11);
-        Map(p => p.matches).Index(12).TypeConverter<MatchListConverter>();
+        Map(p => p.max_mmr).Index(12);
+        Map(p => p.current_mmr).Index(13);
+        Map(p => p.accounts).Index(14);
+        Map(p => p.matches).Index(15).TypeConverter<MatchListConverter>();
     }
 }

@@ -17,5 +17,8 @@ public class PlayerData
 	public string race { get; set; }
 	public int wins { get; set; }
 	public int loses { get; set; }
+	public int max_mmr { get; set; }
+	public int current_mmr { get; set; }
+	public string? accounts { get; set; }
 	public ICollection<Match>? matches { get; set; } = new List<Match>();
 }

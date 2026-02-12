@@ -20,17 +20,28 @@ public class ParsingDataServiceWorker(
         Settings.Port = await portParser.GetPort();
         while (!stoppingToken.IsCancellationRequested)
         {
-            var filePath = FileDirectoryParser.GetDirectoryForLeaderboardToDocker();
-            var dir = Path.GetDirectoryName(filePath);
             string CountryCsvFilePath = FileDirectoryParser.GetDirectoryForPlayerInfo(); 
-            if (!Directory.Exists(dir))
+
+            if (Settings.parseOnlyPlayers)
             {
-                Directory.CreateDirectory(dir); 
+                var filePath = FileDirectoryParser.GetDirectoryForLeaderboardToDocker();
+                var dir = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                await dataParser.WriteListAsync(filePath);
+                return;
             }
-            await dataParser.WriteListAsync(filePath);
+
             var data = await csvParserService.ReadData();
-            data = await playerInfoParser.GetPlayerInfo(data);
-            await csvParserService.WriteToCsvWithCountry(data,CountryCsvFilePath);
+
+            if (Settings.PlayerInfoOffset > 0)
+            {
+                logger.LogInformation($"Resuming from offset {Settings.PlayerInfoOffset}, appending to existing file.");
+            }
+
+            data = await playerInfoParser.GetPlayerInfo(data, csvParserService, CountryCsvFilePath);
             logger.LogInformation($"{data.Count} players saved to CSV.");
         }
     }

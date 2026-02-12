@@ -9,8 +9,8 @@ namespace GGStatParsingDataService.Services
 		public static bool parseOnlyPlayers = false;
 		public static int Port;
 		public static int BatchSize = 25;
-		public static int LeaderboardId = 12966;
-		public static int MaxSize = 150000;
+		public static int LeaderboardId = 12978;
+		public static int MaxSize = 500;
 		public static int PlayerInfoOffset = 0;
 	}
 }

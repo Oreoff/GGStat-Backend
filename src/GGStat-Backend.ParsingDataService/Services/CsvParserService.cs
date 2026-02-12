@@ -23,7 +23,7 @@ namespace GGStatParsingDataService.Services
 
 		public async Task<List<PlayerData>> ReadData()
 		{
-			var filePath = FileDirectoryParser.GetDirectoryForLeaderboardToDocker();
+			var filePath = FileDirectoryParser.GetDirectoryForLeaderboard();
 			
 			var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{

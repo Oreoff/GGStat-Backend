@@ -3,9 +3,9 @@
 public static class FileDirectoryParser
 {
     public static string GetDirectoryForLeaderboard()
-    { 
+    {
         string solutionDirectory =
-        Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
+            Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
         return Path.Combine(solutionDirectory, "db", "players.csv");
     }
 

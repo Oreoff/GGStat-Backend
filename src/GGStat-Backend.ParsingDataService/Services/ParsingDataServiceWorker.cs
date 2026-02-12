@@ -24,7 +24,8 @@ public class ParsingDataServiceWorker(
 
             if (Settings.parseOnlyPlayers)
             {
-                var filePath = FileDirectoryParser.GetDirectoryForLeaderboardToDocker();
+                var filePath = FileDirectoryParser.GetDirectoryForLeaderboard();
+                
                 var dir = Path.GetDirectoryName(filePath);
                 if (!Directory.Exists(dir))
                 {

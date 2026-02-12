@@ -32,7 +32,6 @@ namespace GGStatParsingDataService.Services
 			foreach (var row in rows.EnumerateArray())
 			{
 				var _bucket = row[12].GetInt32();
-				var _country = "";
 				var player = new PlayerData
 				{
 					standing = row[0].GetInt32(),
@@ -43,11 +42,7 @@ namespace GGStatParsingDataService.Services
 						region = GetRegion(row[2].GetInt32()),
 						avatar = row[9].GetString(),
 					},
-					country = new CountryInfo
-					{
-						code = _country,
-						flag = GetFlagUrl(_country),
-					},
+					country = null,
 					rank = new Rank
 					{
 						points = row[3].GetInt32(),

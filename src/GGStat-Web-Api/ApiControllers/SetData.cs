@@ -18,12 +18,13 @@ namespace GGStat_Backend.ApiControllers
 	int offset = 0,
 	int limit = 25,
 	string country_code = "",
+	bool IsUnique = false,
 	[FromQuery(Name = "league")] List<string> league = null,
 	string race = "")
 		{
 			try
 			{
-				var(players,totalCount) = await apiRequestToDb.GetLeaderboard(offset,limit,country_code,league,race);
+				var(players,totalCount) = await apiRequestToDb.GetLeaderboard(offset,limit,country_code,league,race, IsUnique);
 				return Ok(new
 				{
 					players,

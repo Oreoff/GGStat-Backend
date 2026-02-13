@@ -11,7 +11,7 @@ public interface IApiRequestToDb
    Task<List<CountryTop>> GetCountryTop();
    
    Task<PlayerData> GetPlayer(string name);
-   Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race);
+   Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race, bool IsUnique);
 }
 public class ApiRequestsToDb: IApiRequestToDb
 {
@@ -84,11 +84,11 @@ public class ApiRequestsToDb: IApiRequestToDb
       return player;
    }
 
-   public async Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race)
+   public async Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race, bool IsUnique)
    {
          await using var context = await _contextFactory.CreateDbContextAsync();
+         
          var query = context.PlayerData.AsQueryable();
-
          if (!string.IsNullOrEmpty(country_code))
          {
             if (country_code.StartsWith("!"))
@@ -110,6 +110,20 @@ public class ApiRequestsToDb: IApiRequestToDb
          {
             query = query.Where(p => league.Contains(p.league));
          }
+         if (IsUnique)
+         {
+            var uniqueIds = await query
+               .GroupBy(p => p.alias)
+               .Select(g => g
+                  .OrderByDescending(p => p.points)
+                  .Select(p => p.Id)
+                  .First())
+               .ToListAsync();
+
+            query = context.PlayerData
+               .Where(p => uniqueIds.Contains(p.Id));
+         }
+         
          var totalCount = await query.CountAsync();
          var players = await query
             .OrderByDescending(p => p.points)

@@ -18,22 +18,22 @@ public class RefreshReadStoreHandler(IDbContextFactory<PlayersDBContext> dbConte
         var countryTops = players
             .Where(p => !string.IsNullOrEmpty(p.code))
             .GroupBy(p => p.code)
-            .ToDictionary(
-                g => g.Key,
-                g => g
-                    .OrderByDescending(p => p.points)
-                    .Select(p => new CountryTop
-                    {
-                        code = p.code,
-                        flag = p.flag,
-                        name = p.name,
-                        region = p.region,
-                        avatar = p.avatar,
-                        alias = p.alias,
-                        points = p.points
-                    })
-                    .First()
-            );
+            .Select(g => 
+            {
+                var top = g.First(); // вже відсортовано по points ↓
+                return new CountryTop
+                {
+                    code = top.code,
+                    flag = top.flag,
+                    name = top.name,
+                    region = top.region,
+                    avatar = top.avatar,
+                    alias = top.alias,
+                    points = top.points,
+                    playersCount = g.Count()
+                };
+            })
+            .ToList();
 
         readStore.SetPlayers(players);
         readStore.SetCountryTops(countryTops);

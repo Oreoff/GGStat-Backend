@@ -15,7 +15,6 @@ public class GetCountryTopHandler : IRequestHandler<GetCountryTopQuery, List<Cou
     public Task<List<CountryTop>> Handle(GetCountryTopQuery request, CancellationToken ct)
     {
         var result = _readStore.CountryTops
-            .Values
             .ToList();
 
         return Task.FromResult(result);

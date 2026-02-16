@@ -9,5 +9,7 @@
 		public string? avatar { get; set; }
 		public string? alias { get; set; }
 		public int points { get; set; }
+		
+		public int playersCount { get; set; }
 	}
 }

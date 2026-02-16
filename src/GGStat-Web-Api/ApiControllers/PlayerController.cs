@@ -11,9 +11,18 @@ namespace GGStat_Backend.ApiControllers
 	public class PlayerController(IApiRequestToDb apiRequestToDb) : ControllerBase
 	{
 		[HttpGet("{name}")]
-		public async Task<PlayerData?> GetPlayer(string name)
+		public async Task<IActionResult> Get(string name)
 		{
-			return await apiRequestToDb.GetPlayer(name);
+			var (player, alters) = await apiRequestToDb.GetPlayer(name);
+
+			if (player == null)
+				return NotFound();
+
+			return Ok(new
+			{
+				player,
+				alterAccounts = alters
+			});
 		}
 	}
 }

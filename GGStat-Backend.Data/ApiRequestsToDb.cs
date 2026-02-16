@@ -10,7 +10,7 @@ public interface IApiRequestToDb
 
    Task<List<CountryTop>> GetCountryTop();
    
-   Task<PlayerData> GetPlayer(string name);
+  Task<(PlayerData? player, List<AlterAccount> alters)> GetPlayer(string name);
    Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race, bool IsUnique);
 }
 public class ApiRequestsToDb: IApiRequestToDb
@@ -73,15 +73,54 @@ public class ApiRequestsToDb: IApiRequestToDb
       return topPlayers;
    }
 
-   public async Task<PlayerData> GetPlayer(string name)
+   public async Task<(PlayerData? player, List<AlterAccount> alters)> GetPlayer(string name)
    {
       await using var context = await _contextFactory.CreateDbContextAsync();
+      
       var player = await context.PlayerData
          .Include(pd => pd.matches)
          .ThenInclude(m => m.chat)
+         .AsNoTracking()
          .FirstOrDefaultAsync(p => p.name == name);
 
-      return player;
+      if (player == null)
+         return (null, new List<AlterAccount>());
+      
+      var accountNames = player.accounts?
+         .Split('|', StringSplitOptions.RemoveEmptyEntries)
+         .Select(a => a.Trim())
+         .ToList() ?? new List<string>();
+
+      if (!accountNames.Any())
+         return (player, new List<AlterAccount>());
+      
+      var existingAliases = await context.PlayerData
+         .AsNoTracking()
+         .Where(p => accountNames.Contains(p.name))
+         .Select(p => new
+         {
+            p.name,
+            p.league,
+            p.points
+         })
+         .ToListAsync();
+      
+      var alterAccounts = accountNames
+         .Select(name =>
+         {
+            var existing = existingAliases.FirstOrDefault(x => x.name == name);
+
+            return new AlterAccount
+            {
+               name = name,
+               league = existing?.league,
+               mmr = existing?.points,
+               IsQualified = existing != null
+            };
+         })
+         .ToList();
+
+      return (player, alterAccounts);
    }
 
    public async Task<(List<PlayerData>, int)> GetLeaderboard(int offset, int limit, string country_code, List<string> league,string race, bool IsUnique)

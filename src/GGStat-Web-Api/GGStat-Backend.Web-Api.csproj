@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="ISO3166" Version="1.0.4" />
+    <PackageReference Include="MediatR" Version="14.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />

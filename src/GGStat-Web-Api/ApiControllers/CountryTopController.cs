@@ -2,18 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GGStat_Backend.Data;
+using MediatR;
 
 namespace GGStat_Backend.ApiControllers
 {
 	[Route("api/country-top")]
 	[ApiController]
-	public class CountryTopController(IApiRequestToDb apiRequestToDb) : ControllerBase
+	public class CountryTopController(IMediator mediator) : ControllerBase
 	{
 		
 		[HttpGet]
-		public async Task<List<CountryTop>> SetCountryTop()
+		public async Task<IActionResult> Get([FromQuery] GetCountryTopQuery query)
 		{
-			return await apiRequestToDb.GetCountryTop();
+			var result = await mediator.Send(query);
+			return Ok(result);
 		}
 	}
 }

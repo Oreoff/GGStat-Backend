@@ -1,6 +1,7 @@
 using data;
 using GGStat_Backend.controllers;
 using GGStat_Backend.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PortWrapper;
 
@@ -24,10 +25,17 @@ namespace GGStat_Backend
 			});
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSingleton<IPortParser, PortParser>();
+			builder.Services.GetGgStatApiRegister();
+			builder.Services.GetGgStatApiRegister();
 			builder.Services.DataRegister(DefaultConnection);
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddControllers().AddNewtonsoftJson();
 			var app = builder.Build();
+			using (var scope = app.Services.CreateScope())
+			{
+				var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+				await mediator.Send(new RefreshReadStoreCommand());
+			}
 			/*using (var scope = app.Services.CreateScope())
 			{
 				var parser = scope.ServiceProvider.GetRequiredService<IPortParser>();

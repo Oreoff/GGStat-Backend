@@ -14,13 +14,15 @@ public class RefreshReadStoreHandler(IDbContextFactory<PlayersDBContext> dbConte
             .AsNoTracking()
             .OrderByDescending(p => p.points)
             .ToListAsync(ct);
-
-        var countryTops = players
+        var uniquePlayers = players
+            .GroupBy(p => p.alias)
+            .Select(g => g.MaxBy(p => p.points));
+        var countryTops = uniquePlayers
             .Where(p => !string.IsNullOrEmpty(p.code))
             .GroupBy(p => p.code)
             .Select(g => 
             {
-                var top = g.First(); // вже відсортовано по points ↓
+                var top = g.First(); 
                 return new CountryTop
                 {
                     code = top.code,

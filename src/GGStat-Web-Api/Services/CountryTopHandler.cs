@@ -12,7 +12,7 @@ public class GetCountryTopHandler : IRequestHandler<GetCountryTopQuery, List<Cou
         _readStore = readStore;
     }
 
-    public Task<List<CountryTop>> Handle(GetCountryTopQuery request, CancellationToken ct)
+    public Task< List<CountryTop>> Handle(GetCountryTopQuery request, CancellationToken ct)
     {
         var result = _readStore.CountryTops
             .ToList();

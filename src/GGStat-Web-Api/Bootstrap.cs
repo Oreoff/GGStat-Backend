@@ -1,5 +1,4 @@
 ﻿using GGStat_Backend.controllers;
-using GGStat_Backend.Services;
 
 namespace GGStat_Backend;
 
@@ -12,6 +11,5 @@ public static class Bootstrap
             cfg.RegisterServicesFromAssembly(typeof(GetLeaderboardHandler).Assembly));
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(GetCountryTopHandler).Assembly));
-        services.AddHostedService<ReadStoreRefreshService>();
     }
 }

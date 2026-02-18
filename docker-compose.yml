@@ -1,4 +1,3 @@
-version: '3.4'
 
 services:
   ggstat-db-init:
@@ -13,7 +12,9 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
       - PLAYER_INFO_CSV=/data/players_with_countries.csv
-
+    healthcheck:
+      test: [ "CMD", "true" ]
+      interval: 10s
   ggstat-backend-web-api:
     image: ${DOCKER_REGISTRY-}ggstatbackendwebapi
     build:
@@ -22,10 +23,13 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
       - ASPNETCORE_URLS=http://+:5120
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5120:5120"
     volumes:
       - ./db:/data:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      ggstat-db-init:
+        condition: service_healthy

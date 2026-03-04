@@ -24,8 +24,8 @@ services:
       - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=GGStatDB;Username=postgres;Password=maxim12345
       - ASPNETCORE_URLS=http://+:5120
       - ASPNETCORE_ENVIRONMENT=Production
-    expose:
-      - "5120"
+    ports:
+      - "127.0.0.1:5120:5120"
     volumes:
       - ./db:/data:ro
     extra_hosts:
@@ -33,8 +33,3 @@ services:
     depends_on:
       ggstat-db-init:
         condition: service_healthy
-    networks:
-      - ggstat-network
-networks:
-  ggstat-network:
-    external: true
